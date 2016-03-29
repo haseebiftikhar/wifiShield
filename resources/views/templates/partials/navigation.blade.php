@@ -18,7 +18,7 @@
 			@endif
 				<ul class="nav navbar-nav navbar-right">
 					@if(Auth::Check())
-						<li><a href="{{ route('dashbord') }}">{{Auth::user()->getnameOrUsername()}}</a></li>
+						<li><a href="{{ route('newdashBoard') }}">{{Auth::user()->getnameOrUsername()}}</a></li>
 						<li><a href="{{ route('add.device') }}">Add new device</a></li>
 						<li><a href="{{ route('signout') }}">Sign out</a></li>
 					@else

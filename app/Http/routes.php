@@ -15,7 +15,13 @@ Route::get('/{mac_address}/power/{value}',[
 
 /*=================     ROUGH   ==================================*/
 
-
+Route::get('/here',[
+	'uses'=> 'DashBoardController@getForecast',
+	'as'=>'here',
+	]);
+Route::post('/here',[
+	'uses'=> 'DashBoardController@getForecast',
+	]);
 
 
 
@@ -139,14 +145,7 @@ Route::post('/newdashBoard',[
 	'uses'=> 'DashBoardController@postnewdashBoard',
 	]);
 
-Route::get('/here',[
-	'uses'=> 'DashBoardController@getForecast',
-	'as'=>'here',
-	]);
-Route::post('/here',[
-	'uses'=> 'DashBoardController@getForecast',
-	]);
-
 Route::get('/newdevice',['as'=>'add.device',function (Session $session){
 	return view('dashbord',['session'=>$session]);
 	}]);
+

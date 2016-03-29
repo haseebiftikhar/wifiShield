@@ -16,15 +16,15 @@ Class DashBoardController extends Controller
 {
 	public function getnewdashBoard(Session $session)
 	{
-		var_dump($session->get('email'));
 		$client = Client::whereEmail($session->get('email'))->first();
 		$devices = MacAddress::whereUserId($client->id)->count();
 		//dd($devices[0]->mac_address);
 		if($devices == 0)
 		{
-			return view('dashbord',['session'=>$session]);
+			return view('device',['session'=>$session]);
 		}
-		return redirect()->route('here');
+		$session->set('info' , 'Show Charts here !!'); 
+		return view('dashboard',['session'=>$session]);
 	}
 
 	public function postnewdashBoard(Request $request,Session $session)
@@ -41,6 +41,12 @@ Class DashBoardController extends Controller
 		]);
 		return redirect()->route('newdashBoard');
 	}
+
+/*	public function getDashBoard(Session $session)
+	{
+		$session->set('info' , 'Show Charts here !!'); 
+		return view('dashboard',['session'=>$session]);
+	}*/
 
 	public function getForecast(Request $request,Session $session)
 	{
