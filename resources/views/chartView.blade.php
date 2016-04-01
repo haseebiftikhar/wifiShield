@@ -25,7 +25,7 @@
 			<div id="chart-div">
 				<div class="col-lg-6">
 
-					@columnchart('IMDB', 'chart-div')
+					@linechart('Temps', 'chart-div')
 				</div>
 			</div>
 		<div class="col-lg-3"></div>
