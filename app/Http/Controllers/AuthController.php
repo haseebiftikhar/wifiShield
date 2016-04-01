@@ -71,7 +71,7 @@ Class AuthController extends Controller
 
 		\Mail::raw("For confirmation of your account kindly run the given url in your web browser:
 
-			http://localhost:8000/confirmation/".$confirmation_code."
+			http://127.0.0.1:149/wifiShield/confirmation/".$confirmation_code."
 
 			Best Regards
 			Happy Coding!!", function ($message) use ($user){
@@ -106,18 +106,6 @@ Class AuthController extends Controller
 	}
 
 
-
-	/*public function dashbord( Session $session)
-	{
-		if ($session->has('email')) {
-			if ($session->has('password')) {
-				return view('dashbord', ['session'=>$session]);
-			}
-		}
-
-		return redirect()->route('auth.signin');
-	}*/
-
 	public function postSignout(Session $session)
 	{
 		$session->clear();
@@ -148,11 +136,11 @@ Class AuthController extends Controller
 		$user = $request->input('email'); //for email
 
 		Client::where('email',$request->input('email'))
-				->update(['confirmation_code'=>$confirmation_code]);
+				->update(['confirmation_code'=>$confirmation_code,'confirmed'=>0]);
 
 		\Mail::raw("For reset Password of your account kindly run the given url in your web browser:
 
-			http://localhost:8000/reset/".$confirmation_code."
+			http://127.0.0.1:149/wifiShield/reset/".$confirmation_code."
 
 			Best Regards
 			Happy Coding!!", function ($message) use ($user){
@@ -210,6 +198,7 @@ Class AuthController extends Controller
 			return view('home',['session'=>$session]);
         }
         $user->password = bcrypt($request->input('password1'));
+        $user->confirmed = 1;
         $user->confirmation_code = null;
         $user->save();
         $session->set('info' , 'Now you may log in');

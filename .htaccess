@@ -1,0 +1,8 @@
+Options +FollowSymLinks
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} ^.*\.(jpg|css|js|gif|png|html|woff|mp3|woff2|ttf|otf|eot|svg|ico|txt)$
+RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
+
+RewriteCond %{REQUEST_URI} !^.*\.(jpg|css|js|gif|png|html|woff|mp3|woff2|ttf|otf|eot|svg|ico|txt)$
+RewriteRule ^ index.php [L]

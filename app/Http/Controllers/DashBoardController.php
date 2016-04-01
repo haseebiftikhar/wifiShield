@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Http\Request;
 use App\Models\Client;
 use App\Models\MacAddress;
+use App\Models\Voltage;
 
 //use Auth;
 
@@ -23,7 +24,7 @@ Class DashBoardController extends Controller
 		{
 			return view('device',['session'=>$session]);
 		}
-		$session->set('info' , 'Show Charts here !!'); 
+		$session->set('info' , 'Show Charts here !!'); // Redirect to >>Show Dashboard !! 
 		return view('dashboard',['session'=>$session]);
 	}
 
@@ -42,14 +43,11 @@ Class DashBoardController extends Controller
 		return redirect()->route('newdashBoard');
 	}
 
-/*	public function getDashBoard(Session $session)
-	{
-		$session->set('info' , 'Show Charts here !!'); 
-		return view('dashboard',['session'=>$session]);
-	}*/
 
 	public function getForecast(Request $request,Session $session)
 	{
+		var_dump('Dead End !!');
+		exit();
 		$city = 'Lahore';//$request->input('city');
 		if ($request->input('city')) {
 			$city = $request->input('city');

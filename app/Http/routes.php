@@ -1,69 +1,15 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Session;
 
-Route::get('/{mac_address}/voltage/{value}',[
-	'uses'=>'ClientDataController@storeVoltage'
-	]);
 
-Route::get('/{mac_address}/current/{value}',[
-	'uses'=>'ClientDataController@storeCurrent'
-	]);
-
-Route::get('/{mac_address}/power/{value}',[
-	'uses'=>'ClientDataController@storePower'
-	]);
-
-/*=================     ROUGH   ==================================*/
-
-Route::get('/here',[
-	'uses'=> 'DashBoardController@getForecast',
-	'as'=>'here',
-	]);
-Route::post('/here',[
-	'uses'=> 'DashBoardController@getForecast',
+Route::get('/data',[
+	'uses'=>'ClientDataController@showVoltage',
 	]);
 
 
 
-Route::get('/guzzle1', [
-	'uses' => 'GuzzleController@get_git',
-	]);
-
-Route::get('/abc', [
-	'uses' => 'ChartController@getChart',
-	]);
-
-Route::get('/weather', [
-	'uses' => 'WeatherController@getWeather',
-	]);
-
-Route::get('/weatherForecast/{city}', [
-	'uses' => 'WeatherController@weatherForecast',
-	]);
-
-Route::get('/displayForecast/{city}', [
-	'uses' => 'WeatherChart@getWeather',
-	]);
 
 
-Route::get('/guzzle', function () {
-    $client = new GuzzleHttp\Client();
-    $response = $client->get('https://api.github.com/users/haseebiftikhar');
-    return $response->getBody();
-});
-
-Route::get('users/{username}', function($username)
-{
-    $client = new GuzzleHttp\Client([
-        'base_uri' => 'https://api.github.com/']);
-
-    $res = $client->get("users/$username");
-
-    //echo $res->getStatusCode();
-    var_dump($res->getStatusCode());
-
-    echo $res->getBody();
-});
 
 Route::get('/alert', function (Session $session) {
 	$session->set('info','Alert!');
@@ -146,6 +92,20 @@ Route::post('/newdashBoard',[
 	]);
 
 Route::get('/newdevice',['as'=>'add.device',function (Session $session){
-	return view('dashbord',['session'=>$session]);
+	return view('device',['session'=>$session]);
 	}]);
+
+
+// END POINTS
+Route::post('/{api_key}/voltage/{value}',[
+	'uses'=>'ApiRequestController@storeVoltage'
+	]);
+
+Route::post('/{api_key}/current/{value}',[
+	'uses'=>'ApiRequestController@storeCurrent'
+	]);
+
+Route::post('/{api_key}/power/{value}',[
+	'uses'=>'ApiRequestController@storePower'
+	]);
 
