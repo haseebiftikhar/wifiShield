@@ -7,28 +7,45 @@ use Khill\Lavacharts\Laravel\LavachartsFacade as Lava;
 
 use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Http\Request;
+//use Carbon\Carbon;
 
 use App\Models\Client;
 use App\Models\Voltage;
+use App\Models\MacAddress;
 // use App\Models\Current;
 // use App\Models\Power;
-//use App\Models\MacAddress;
+//
 
 
 Class ClientDataController extends Controller
 {
+	public function date()
+	{
+		$date = new \DateTime();
+		var_dump($date->format('Y-m-d'));
+		$hours = $date->format('h:i A');
+		var_dump($hours);
+		$date->modify('-1 day');
+		var_dump($date);
+	}
 	public function showVoltage (Session $session)
 	{
 		$session->set('email' , 'haseeb@brokergenius.com');
 
 		$client = Client::whereEmail($session->get('email'))->first();
 
-		$voltages = \DB::table('voltages')->where('user_id', $client->id)->lists('voltage');
+		$mac_address = MacAddress::whereUserId($client->id)->get();
+		
+		foreach ($mac_address as $variable) {
+			$mac[]=$variable->mac_address;
+		}
+		// Here i am =============================================================================================//    
+		$voltages = \DB::table('voltages')->where('mac_address', $mac[1])->lists('voltage');
 
 		foreach ($voltages as $voltage) {
-			//var_dump($voltage);
+			var_dump($voltage);
 		}
-
+		exit();
 		$date = new \DateTime();
 		$timeStemp = $date->getTimestamp();
 
@@ -55,8 +72,7 @@ Class ClientDataController extends Controller
 
 		$voltages->addDateColumn('Date')
 		             ->addNumberColumn('Max Temp')
-		             ->addRow(['2014-10-1',  67])
-		             ->addRow(['2014-10-2',  68])
+		             ->addRow(['2014-10-1',  67])		             ->addRow(['2014-10-2',  68])
 		             ->addRow(['2014-10-3',  68])
 		             ->addRow(['2014-10-4',  72])
 		             ->addRow(['2014-10-5',  61])

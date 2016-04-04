@@ -6,7 +6,9 @@ Route::get('/data',[
 	'uses'=>'ClientDataController@showVoltage',
 	]);
 
-
+Route::get('/date',[
+	'uses'=>'ClientDataController@date',
+	]);
 
 
 

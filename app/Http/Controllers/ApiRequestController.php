@@ -8,27 +8,41 @@ use App\Models\Current;
 use App\Models\Power;
 use App\Models\MacAddress;
 
+use App\Response\Response;
+
 //use Carbon\Carbon;
 
 Class ApiRequestController extends Controller
 {
+
+	protected $response;
+
+	public function __construct(Response $response)
+	{
+		$this->response = $response;
+	}
+
 	public function storeVoltage($api_key,$value,Request $request)
 	{	
 
 		//MAC Address from headers !! 
 		$mac_address = $request->header('mac-address');
-//		$mac_address = 'anc12345'; // temperory 
 		if(!$mac_address)
 		{
-			var_dump('Invalid MAC');
-			exit();
+			$val_resp = 'Mac address not found';
+			return $this->response->bad_request($val_resp);
+		}
+
+		//Authenticate Mac 
+		$macAddress = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$macAddress) {
+			return $this->response->unauthorize();
 		}
 
 		//Authenticate user
 		$user = Client::whereApiKey($api_key)->first();
 		if (!$user) {
-			var_dump('INVALID api key');
-			exit();
+			return $this->response->forbidden();
 		}
 
 		//Set time
@@ -45,25 +59,14 @@ Class ApiRequestController extends Controller
 			'voltage'=>$value,
 			'date'=>$timeStemp,
 		]);
+		$response = 'value saved';
+		return $this->response->success($response);
 
 		 //Log file
         $path = 'C:\wamp\www\wifiShield\Logs';
         $this->myfile = fopen($path . "\_voltage" . date('Y-m-d-H-m-s') . '.txt', "a") or die("Unable to open file!");
 
-		/*
 
-		Voltage::
-		var_dump($user->id);
-		var_dump($value);*/
-/*		$carbon = Carbon::now();
-		$date= $carbon->toDateTimeString();
-		var_dump($date);
-		$dt = Carbon::parse($date);
-		var_dump($dt->timestamp);
-		exit();
-		$daysSinceEpoch = Carbon::createFromTimestamp(0)->diffInDays();
-		var_dump($daysSinceEpoch);
-*/
 	}
 
 	public function storeCurrent($api_key,$value,Request $request)
@@ -71,18 +74,22 @@ Class ApiRequestController extends Controller
 
 		//MAC Address from headers !! 
 		$mac_address = $request->header('mac-address');
-//		$mac_address = 'anc12345'; // temperory 
 		if(!$mac_address)
 		{
-			var_dump('Invalid MAC');
-			exit();
+			$val_resp = 'Mac address not found';
+			return $this->response->bad_request($val_resp);
+		}
+		
+		//Authenticate Mac 
+		$macAddress = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$macAddress) {
+			return $this->response->unauthorize();
 		}
 
 		//Authenticate user
 		$user = Client::whereApiKey($api_key)->first();
 		if (!$user) {
-			var_dump('INVALID api key');
-			exit();
+			return $this->response->forbidden();
 		}
 
 		//Set time
@@ -97,6 +104,9 @@ Class ApiRequestController extends Controller
 			'date'=>$timeStemp,
 		]);
 
+		$response = 'value saved';
+		return $this->response->success($response);
+
 	}
 
 	public function storePower($api_key,$value,Request $request)
@@ -104,20 +114,23 @@ Class ApiRequestController extends Controller
 
 		//MAC Address from headers !! 
 		$mac_address = $request->header('mac-address');
-//		$mac_address = 'anc12345'; // temperory 
 		if(!$mac_address)
 		{
-			var_dump('Invalid MAC');
-			exit();
+			$val_resp = 'Mac address not found';
+			return $this->response->bad_request($val_resp);
+		}
+		
+		//Authenticate Mac 
+		$macAddress = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$macAddress) {
+			return $this->response->unauthorize();
 		}
 
 		//Authenticate user
 		$user = Client::whereApiKey($api_key)->first();
 		if (!$user) {
-			var_dump('INVALID api key');
-			exit();
+			return $this->response->forbidden();
 		}
-
 		//Set time
 		$date = new \DateTime();
 		$timeStemp = $date->getTimestamp();
@@ -130,5 +143,8 @@ Class ApiRequestController extends Controller
 			'power'=>$value,
 			'date'=>$timeStemp,
 		]);
+
+		$response = 'value saved';
+		return $this->response->success($response);
 	}
 }
