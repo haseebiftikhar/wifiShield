@@ -71,7 +71,7 @@ Class AuthController extends Controller
 
 		\Mail::raw("For confirmation of your account kindly run the given url in your web browser:
 
-			http://127.0.0.1:149/wifiShield/confirmation/".$confirmation_code."
+			http://111.68.98.142:149/wifiShield/confirmation/".$confirmation_code."
 
 			Best Regards
 			Happy Coding!!", function ($message) use ($user){
@@ -140,7 +140,7 @@ Class AuthController extends Controller
 
 		\Mail::raw("For reset Password of your account kindly run the given url in your web browser:
 
-			http://127.0.0.1:149/wifiShield/reset/".$confirmation_code."
+			http://111.68.98.142:149/wifiShield/reset/".$confirmation_code."
 
 			Best Regards
 			Happy Coding!!", function ($message) use ($user){
