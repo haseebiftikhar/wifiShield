@@ -10,7 +10,8 @@
         "khill/lavacharts" : "3.0.*",
         "cmfcmf/openweathermap-php-api": "dev-master",
         "guzzlehttp/guzzle": "<6.0",
-        "nesbot/carbon": "^1.21"
+        "nesbot/carbon": "^1.21",
+        "elasticquent/elasticquent": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
