@@ -3,7 +3,17 @@ use Symfony\Component\HttpFoundation\Session\Session;
 
 
 Route::get('/data',[
-	'uses'=>'ClientDataController@showVoltage',
+	'uses'=>'ClientDataController@showData',
+	'as'=>'data',
+	]);
+
+Route::get('/newRoute/{value}',[
+	'uses'=>'ClientDataController@showSelectedData',
+	'as'=>'newRoute',
+	]);
+Route::post('/search',[
+	'uses'=>'ClientDataController@searchData',
+	'as'=>'search',
 	]);
 
 Route::get('/date',[
@@ -19,7 +29,6 @@ Route::get('/alert', function (Session $session) {
 	});
 
 
-/*=================    END ROUGH =============================================*/
 Route::get('/', function () {
     return redirect()->route('home');
 	});
@@ -94,7 +103,7 @@ Route::post('/newdashBoard',[
 	]);
 
 Route::get('/newdevice',['as'=>'add.device',function (Session $session){
-	return view('device',['session'=>$session]);
+	return view('device',['session'=>$session,'macAddress'=>null,'mac_address'=>null]); /////////// need improvments
 	}]);
 
 

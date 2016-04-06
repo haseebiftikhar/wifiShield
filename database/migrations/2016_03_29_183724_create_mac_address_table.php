@@ -16,6 +16,7 @@ class CreateMacAddressTable extends Migration
             $table->increments('id');
             $table->string('user_id');
             $table->string('mac_address');
+            $table->string('device_name');
             $table->timestamps();
         });
     }

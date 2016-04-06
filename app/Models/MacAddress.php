@@ -11,5 +11,6 @@ class MacAddress extends Model
     protected $fillable = [
         'user_id',
         'mac_address',
+        'device_name',
     ];
 }

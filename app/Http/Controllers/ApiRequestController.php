@@ -18,6 +18,17 @@ Class ApiRequestController extends Controller
 	protected $response;
 	protected $guzzle;
 
+
+
+/*
+		$abc = base64_encode('12:1212121e01');
+		var_dump($abc);
+		$cde = base64_decode($abc);
+		dd($cde);
+
+*/
+
+
 	public function __construct(Response $response, \GuzzleHttp\Client $guzzle)
 	{
 		$this->response = $response;
@@ -49,11 +60,11 @@ Class ApiRequestController extends Controller
 
 		//Set time
 		$date = new \DateTime();
+
+		//$date->format('Y-m-03');
+		$date->modify('+1 day');
+		var_dump($date);
 		$timeStemp = $date->getTimestamp();
-/*		$date->setTimestamp($time);
-		var_dump($date->format('Y-m-d H:i:s'));
-*/
-		//===============================
 
 		$data = [
 			'user_id'=> $user->id,
@@ -65,24 +76,14 @@ Class ApiRequestController extends Controller
 
 		$request = $this->guzzle->post($url, ['json' => $data]);
 
-		//$res = $request->send();
-
-/*		return true;
-		//===============================
-
 		//Store voltages in Data Base
 		Voltage::create([
 			'user_id'=> $user->id,
 			'mac_address'=> $mac_address,
 			'voltage'=>$value,
 			'date'=>$timeStemp,
-		]);*/
+		]);
 
-		
-
-		/*$res = $this->guzzle->post('http://localhost:9200/wifishield/current/',$data);
-		var_dump($res->getStatusCode());
-		var_dump($res->json);*/
 
 		$response = 'value saved';
 		return $this->response->success($response);
@@ -90,8 +91,6 @@ Class ApiRequestController extends Controller
 		 //Log file
         $path = 'C:\wamp\www\wifiShield\Logs';
         $this->myfile = fopen($path . "\_voltage" . date('Y-m-d-H-m-s') . '.txt', "a") or die("Unable to open file!");
-
-
 	}
 
 	public function storeCurrent($api_key,$value,Request $request)
@@ -119,6 +118,12 @@ Class ApiRequestController extends Controller
 
 		//Set time
 		$date = new \DateTime();
+
+		//$date->format('Y-m-03');
+		$date->modify('+1 day');
+		var_dump($date);
+
+
 		$timeStemp = $date->getTimestamp();
 
 		$data = [
@@ -129,6 +134,8 @@ Class ApiRequestController extends Controller
 		];
 
 		$url = 'http://localhost:9200/wifishield/current/';
+
+		//dd(['json' => $data]);
 
 		$request = $this->guzzle->post($url, ['json' => $data]);
 
@@ -168,6 +175,12 @@ Class ApiRequestController extends Controller
 		}
 		//Set time
 		$date = new \DateTime();
+
+		//$date->format('Y-m-03');
+		$date->modify('+1 day');
+		var_dump($date);
+
+
 		$timeStemp = $date->getTimestamp();
 
 		$data = [
