@@ -76,7 +76,7 @@ Class AuthController extends Controller
 			Best Regards
 			Happy Coding!!", function ($message) use ($user){
             $message->to($user, 'Beloved User')
-        		    ->subject('LaravelGMail App!');
+        		    ->subject('APPLICATION!');
         });
 
 		$session->set('info' , 'Your Account has been created, check you inbox for confirmation First and then signin !!');
@@ -145,7 +145,7 @@ Class AuthController extends Controller
 			Best Regards
 			Happy Coding!!", function ($message) use ($user){
             $message->to($user, 'Beloved User')
-        		    ->subject('LaravelGMail App!');
+        		    ->subject('APPLICATION!');
         });
 
         $session->set('info' , 'An email to reset your password is send to you!!');

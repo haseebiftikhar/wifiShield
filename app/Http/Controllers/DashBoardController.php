@@ -17,6 +17,7 @@ Class DashBoardController extends Controller
 			$session->set('info' , 'Please Add WiFi Device First');
 			return view('device',['session'=>$session, 'macAddress'=>null]);
 		}
+		
 		return redirect()->route('data'); // redirect to show CHARTS CLientDataController
 	}
 
@@ -34,6 +35,30 @@ Class DashBoardController extends Controller
 			'mac_address'=>$request->input('mac_address'),
 			'device_name'=>$request->input('device_name'),
 		]);
+
+        $user = $session->get('email');
+		$mac = base64_encode($request->input('mac_address'));
+		//dd("http://111.68.98.142:149/wifiShield/".$client->api_key.'-'.$mac);
+
+		\Mail::raw("Use following URL to send Post HTTP request:
+
+			For Device: 
+			MAC: ".$request->input('mac_address')."
+			Device Name: ".$request->input('device_name')."
+
+			http://111.68.98.142:149/wifiShield/".$client->api_key.'-'.$mac."/voltage/000
+			http://111.68.98.142:149/wifiShield/".$client->api_key.'-'.$mac."/power/000
+			http://111.68.98.142:149/wifiShield/".$client->api_key.'-'.$mac."/current/000
+
+			000 is value(Volts, Amps, Watts) you want to store.
+
+			Best Regards
+			Happy Coding!!", function ($message) use ($user){
+            $message->to($user, 'Beloved User')
+        		    ->subject('APPLICATION!');
+        });
+        
+        $session->set('info' , 'Check email for HTTP Request Method.');
 		return redirect()->route('newdashBoard');
 	}
 

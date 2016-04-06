@@ -11,7 +11,7 @@ class HomeController extends Controller
 	{
 		
 		
-			$view = view ('home',['session'=>$session]);
+			$view = view ('home',['session'=>$session, 'macAddress'=>null]);
 		
 	    	return	$view;
 	}

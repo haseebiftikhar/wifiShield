@@ -20,15 +20,6 @@ Class ApiRequestController extends Controller
 
 
 
-/*
-		$abc = base64_encode('12:1212121e01');
-		var_dump($abc);
-		$cde = base64_decode($abc);
-		dd($cde);
-
-*/
-
-
 	public function __construct(Response $response, \GuzzleHttp\Client $guzzle)
 	{
 		$this->response = $response;
@@ -37,9 +28,12 @@ Class ApiRequestController extends Controller
 
 	public function storeVoltage($api_key,$value,Request $request)
 	{	
+		$key = explode('-',$api_key);
+		$api_key = $key[0];
+		$mac_address = base64_decode($key[1]);
 
 		//MAC Address from headers !! 
-		$mac_address = $request->header('mac-address');
+		//$mac_address = $request->header('mac-address');
 		if(!$mac_address)
 		{
 			$val_resp = 'Mac address not found';
@@ -95,9 +89,12 @@ Class ApiRequestController extends Controller
 
 	public function storeCurrent($api_key,$value,Request $request)
 	{	
-
+        $key = explode('-',$api_key);
+		$api_key = $key[0];
+		$mac_address = base64_decode($key[1]);
+		
 		//MAC Address from headers !! 
-		$mac_address = $request->header('mac-address');
+		//$mac_address = $request->header('mac-address');
 		if(!$mac_address)
 		{
 			$val_resp = 'Mac address not found';
@@ -154,8 +151,12 @@ Class ApiRequestController extends Controller
 	public function storePower($api_key,$value,Request $request)
 	{	
 
+		$key = explode('-',$api_key);
+		$api_key = $key[0];
+		$mac_address = base64_decode($key[1]);
+		
 		//MAC Address from headers !! 
-		$mac_address = $request->header('mac-address');
+		//$mac_address = $request->header('mac-address');
 		if(!$mac_address)
 		{
 			$val_resp = 'Mac address not found';
