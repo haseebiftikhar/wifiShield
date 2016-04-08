@@ -24,10 +24,10 @@ Class DashBoardController extends Controller
 	public function postnewdashBoard(Request $request,Session $session)
 	{	
 		$this->validate($request, [
-			'mac_address' => 'required',
-			'device_name' => 'required',
+			'mac_address' => 'required|unique:macaddreses|max:255',
+			'device_name' => 'required|unique:macaddreses|max:255',
 		]);
-
+		dd($request);
 		$client = Client::whereEmail($session->get('email'))->first();
 		
 		MacAddress::create([
