@@ -56,7 +56,7 @@ Class ApiRequestController extends Controller
 		$date = new \DateTime();
 
 		//$date->format('Y-m-03');
-		$date->modify('+1 day');
+		//$date->modify('+1 day');
 		var_dump($date);
 		$timeStemp = $date->getTimestamp();
 
@@ -117,7 +117,7 @@ Class ApiRequestController extends Controller
 		$date = new \DateTime();
 
 		//$date->format('Y-m-03');
-		$date->modify('+1 day');
+		//$date->modify('+1 day');
 		var_dump($date);
 
 
@@ -178,7 +178,7 @@ Class ApiRequestController extends Controller
 		$date = new \DateTime();
 
 		//$date->format('Y-m-03');
-		$date->modify('+1 day');
+		//$date->modify('+1 day');
 		var_dump($date);
 
 
