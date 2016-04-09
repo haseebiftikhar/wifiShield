@@ -53,7 +53,9 @@ Class ApiRequestController extends Controller
 		}
 
 		//Set time
+		$timezone = new \DateTimeZone('Asia/Karachi');
 		$date = new \DateTime();
+		$date->setTimezone($timezone);
 
 		//$date->format('Y-m-03');
 		//$date->modify('+1 day');
@@ -113,7 +115,9 @@ Class ApiRequestController extends Controller
 		}
 
 		//Set time
+		$timezone = new \DateTimeZone('Asia/Karachi');
 		$date = new \DateTime();
+		$date->setTimezone($timezone);
 
 		//$date->format('Y-m-03');
 		//$date->modify('+1 day');
@@ -172,7 +176,9 @@ Class ApiRequestController extends Controller
 			return $this->response->forbidden();
 		}
 		//Set time
+		$timezone = new \DateTimeZone('Asia/Karachi');
 		$date = new \DateTime();
+		$date->setTimezone($timezone);
 
 		//$date->format('Y-m-03');
 		//$date->modify('+1 day');
