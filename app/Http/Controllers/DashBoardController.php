@@ -27,6 +27,7 @@ Class DashBoardController extends Controller
 			'mac_address' => 'required|unique:macaddreses|max:255',
 			'device_name' => 'required|unique:macaddreses|max:255',
 		]);
+		dd($request);
 		$client = Client::whereEmail($session->get('email'))->first();
 		
 		MacAddress::create([
