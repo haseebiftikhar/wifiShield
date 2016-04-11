@@ -18,6 +18,7 @@ Class ClientDataController extends Controller
 		
 		$mac_address = MacAddress::whereUserId($client->id)->first();
 		
+		
 
 		return view('dashboard',['macAddress'=>$macAddress,'mac_address'=>$mac_address,'session'=>$session]);
 	}
