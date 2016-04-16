@@ -17,6 +17,7 @@ Class ApiRequestController extends Controller
 
 	protected $response;
 	protected $guzzle;
+	protected $date;
 
 
 
@@ -24,16 +25,19 @@ Class ApiRequestController extends Controller
 	{
 		$this->response = $response;
 		$this->guzzle = $guzzle;
+		$timezone = new \DateTimeZone('Asia/Karachi');
+		$date = new \DateTime();
+		$date->setTimezone($timezone);
+		$this->date = $date;
 	}
 
-	public function storeVoltage($api_key,$value,Request $request)
-	{	
-		$key = explode('-',$api_key);
-		$api_key = $key[0];
-		$mac_address = base64_decode($key[1]);
+	public function deviceControl($api_key,Request $request)
+	{
+		$mac_address = base64_decode($api_key);
+		/* to get mac address from headers 
+		 * $mac_address = $request->header('mac-address');
+		 */
 
-		//MAC Address from headers !! 
-		//$mac_address = $request->header('mac-address');
 		if(!$mac_address)
 		{
 			$val_resp = 'Mac address not found';
@@ -41,31 +45,44 @@ Class ApiRequestController extends Controller
 		}
 
 		//Authenticate Mac 
-		$macAddress = MacAddress::whereMacAddress($mac_address)->first();
-		if (!$macAddress) {
+		$user = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$user) {
 			return $this->response->unauthorize();
 		}
 
-		//Authenticate user
-		$user = Client::whereApiKey($api_key)->first();
-		if (!$user) {
-			return $this->response->forbidden();
+		if ($user->status == 1) {
+			return $this->response->keep_on();
+		}
+		if ($user->status == 0) {
+			return $this->response->turn_off();
 		}
 
-		//Set time
-		$timezone = new \DateTimeZone('Asia/Karachi');
-		$date = new \DateTime();
-		$date->setTimezone($timezone);
+	}
 
-		//$date->format('Y-m-03');
-		//$date->modify('+1 day');
-		$timeStemp = $date->getTimestamp();
+	public function storeVoltage($api_key,$value,Request $request)
+	{	
+		$mac_address = base64_decode($api_key);
 
+		if(!$mac_address)
+		{
+			$val_resp = 'Mac address not found';
+			return $this->response->bad_request($val_resp);
+		}
+
+		//Authenticate Mac !!
+		$user = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$user) {
+			return $this->response->unauthorize();
+		}
+
+
+		$timeStemp = $this->date->getTimestamp();
+ 
 		$data = [
-			'user_id'=> $user->id,
+			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,
 			'voltage'=>$value,
-			'date'=>$date->format('c'),
+			'date'=>$this->date->format('c'),
 		];
 		$url = 'http://localhost:9200/wifishield/voltage/';
 
@@ -73,7 +90,7 @@ Class ApiRequestController extends Controller
 
 		//Store voltages in Data Base
 		Voltage::create([
-			'user_id'=> $user->id,
+			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,
 			'voltage'=>$value,
 			'date'=>$timeStemp,
@@ -83,63 +100,41 @@ Class ApiRequestController extends Controller
 		$response = 'value saved';
 		return $this->response->success($response);
 
-		 //Log file
-        $path = 'C:\wamp\www\wifiShield\Logs';
-        $this->myfile = fopen($path . "\_voltage" . date('Y-m-d-H-m-s') . '.txt', "a") or die("Unable to open file!");
 	}
 
 	public function storeCurrent($api_key,$value,Request $request)
 	{	
-        $key = explode('-',$api_key);
-		$api_key = $key[0];
-		$mac_address = base64_decode($key[1]);
-		
-		//MAC Address from headers !! 
-		//$mac_address = $request->header('mac-address');
+        $mac_address = base64_decode($api_key);
+
 		if(!$mac_address)
 		{
 			$val_resp = 'Mac address not found';
 			return $this->response->bad_request($val_resp);
 		}
-		
-		//Authenticate Mac 
-		$macAddress = MacAddress::whereMacAddress($mac_address)->first();
-		if (!$macAddress) {
+
+		//Authenticate Mac !!
+		$user = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$user) {
 			return $this->response->unauthorize();
 		}
 
-		//Authenticate user
-		$user = Client::whereApiKey($api_key)->first();
-		if (!$user) {
-			return $this->response->forbidden();
-		}
 
-		//Set time
-		$timezone = new \DateTimeZone('Asia/Karachi');
-		$date = new \DateTime();
-		$date->setTimezone($timezone);
-
-		//$date->format('Y-m-03');
-		//$date->modify('+1 day');
-
-		$timeStemp = $date->getTimestamp();
+		$timeStemp = $this->date->getTimestamp();
 
 		$data = [
-			'user_id'=> $user->id,
+			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,
 			'current'=>$value,
-			'date'=>$date->format('c'),
+			'date'=>$this->date->format('c'),
 		];
 
 		$url = 'http://localhost:9200/wifishield/current/';
-
-		//dd(['json' => $data]);
 
 		$request = $this->guzzle->post($url, ['json' => $data]);
 
 		//Store voltages in Data Base
 		Current::create([
-			'user_id'=> $user->id,
+			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,
 			'current'=>$value,
 			'date'=>$timeStemp,
@@ -152,45 +147,28 @@ Class ApiRequestController extends Controller
 	public function storePower($api_key,$value,Request $request)
 	{	
 
-		$key = explode('-',$api_key);
-		$api_key = $key[0];
-		$mac_address = base64_decode($key[1]);
-		
-		//MAC Address from headers !! 
-		//$mac_address = $request->header('mac-address');
+		$mac_address = base64_decode($api_key);
+
 		if(!$mac_address)
 		{
 			$val_resp = 'Mac address not found';
 			return $this->response->bad_request($val_resp);
 		}
-		
-		//Authenticate Mac 
-		$macAddress = MacAddress::whereMacAddress($mac_address)->first();
-		if (!$macAddress) {
+
+		//Authenticate Mac !!
+		$user = MacAddress::whereMacAddress($mac_address)->first();
+		if (!$user) {
 			return $this->response->unauthorize();
 		}
 
-		//Authenticate user
-		$user = Client::whereApiKey($api_key)->first();
-		if (!$user) {
-			return $this->response->forbidden();
-		}
-		//Set time
-		$timezone = new \DateTimeZone('Asia/Karachi');
-		$date = new \DateTime();
-		$date->setTimezone($timezone);
 
-		//$date->format('Y-m-03');
-		//$date->modify('+1 day');
-
-
-		$timeStemp = $date->getTimestamp();
+		$timeStemp = $this->date->getTimestamp();
 
 		$data = [
-			'user_id'=> $user->id,
+			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,
 			'power'=>$value,
-			'date'=>$date->format('c'),
+			'date'=>$this->date->format('c'),
 		];
 
 		$url = 'http://localhost:9200/wifishield/power/';
@@ -199,7 +177,7 @@ Class ApiRequestController extends Controller
 
 		//Store Power
 		Power::create([
-			'user_id'=> $user->id,
+			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,
 			'power'=>$value,
 			'date'=>$timeStemp,

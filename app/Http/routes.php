@@ -102,10 +102,29 @@ Route::post('/newdashBoard',[
 	'uses'=> 'DashBoardController@postnewdashBoard',
 	]);
 
-Route::get('/newdevice',['as'=>'add.device',function (Session $session){
-	return view('device',['session'=>$session,'macAddress'=>null,'mac_address'=>null]); /////////// need improvments
-	}]);
 
+Route::get('/new',[
+	'uses'=>'DeviceController@addDevice',
+	'as'=>'add.device',
+	]);
+Route::get('/removedevice',[
+	'uses'=>'DeviceController@removeDevice',
+	'as'=>'remove.device',
+	]);
+Route::get('/turn',[
+	'uses'=>'DeviceController@turnDevice',
+	'as'=>'turn.device',
+	]);
+
+Route::post('/remove',[
+	'uses'=>'DeviceController@deleteDevice',
+	'as'=>'remove',
+	]);
+
+Route::post('/status',[
+	'uses'=>'DeviceController@changeStatus',
+	'as'=>'status',
+	]);
 
 // END POINTS
 Route::post('/{api_key}/voltage/{value}',[
@@ -118,5 +137,9 @@ Route::post('/{api_key}/current/{value}',[
 
 Route::post('/{api_key}/power/{value}',[
 	'uses'=>'ApiRequestController@storePower'
+	]);
+
+Route::post('/{api_key}/status',[
+	'uses'=>'ApiRequestController@deviceControl'
 	]);
 

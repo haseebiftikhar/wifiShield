@@ -6,6 +6,8 @@
 
         <!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+
         
          <style>
             .outter-class iframe {
@@ -58,6 +60,19 @@
             .dropdown:hover .dropbtn {
                 background-color: #E6E6E6;
                 color: black;
+            }
+            select {
+                width: 100%;
+                padding: 16px 20px;
+                border: none;
+                border-radius: 4px;
+                background-color: #f1f1f1;
+            }
+            input[type=text] {
+                width: 100%;
+                padding: 12px 20px;
+                margin: 8px 0;
+                box-sizing: border-box;
             }
         </style>
     </head>

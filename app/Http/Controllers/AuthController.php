@@ -43,7 +43,7 @@ Class AuthController extends Controller
 		$session->set('email',$request->input('email'));
 		//$session->set('id',$request->input('id'));
 
-		$session->set('info' , 'You are Signed in');
+		//$session->set('info' , 'You are Signed in');
 		return redirect()->route('newdashBoard');
 	}
 
@@ -74,7 +74,7 @@ Class AuthController extends Controller
 			http://111.68.98.142:149/wifiShield/confirmation/".$confirmation_code."
 
 			Best Regards
-			Happy Coding!!", function ($message) use ($user){
+			Happy Energy Saving!!", function ($message) use ($user){
             $message->to($user, 'Beloved User')
         		    ->subject('APPLICATION!');
         });
@@ -143,7 +143,7 @@ Class AuthController extends Controller
 			http://111.68.98.142:149/wifiShield/reset/".$confirmation_code."
 
 			Best Regards
-			Happy Coding!!", function ($message) use ($user){
+			Happy Energy Saving!!", function ($message) use ($user){
             $message->to($user, 'Beloved User')
         		    ->subject('APPLICATION!');
         });

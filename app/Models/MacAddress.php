@@ -16,5 +16,6 @@ class MacAddress extends Model implements AuthenticatableContract
         'user_id',
         'mac_address',
         'device_name',
+        'status',
     ];
 }

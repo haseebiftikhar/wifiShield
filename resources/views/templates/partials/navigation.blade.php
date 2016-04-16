@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">A P P L I C A T I O N</a>
+				<a class="navbar-brand" href="{{ route('data') }}">Energy Monitoring and Control System</a>
 			</div>
 		<div class="collapse navbar-collapse">
 			@if (Auth::Check())
@@ -15,8 +15,14 @@
 					</div>  
 					<button type="submit" class="btn btn-default">Search</button>
 				</form>-->
-				<ul class="nav navbar-nav navbar-center">
-					<div class="dropdown">
+				
+			@endif
+			<ul class="nav navbar-nav navbar-right">
+				@if(Auth::Check())
+					<li><a href="{{ route('newdashBoard') }}">{{Auth::user()->getnameOrUsername()}}</a></li>
+
+					<li>
+						<div class="dropdown">
 						  <button class="dropbtn">Select Device</button>
 						  <div class="dropdown-content">
 						  @if ($macAddress)
@@ -27,12 +33,16 @@
 
 						  </div>
 					</div>
-				</ul>
-			@endif
-			<ul class="nav navbar-nav navbar-right">
-				@if(Auth::Check())
-					<li><a href="{{ route('newdashBoard') }}">{{Auth::user()->getnameOrUsername()}}</a></li>
-					<li><a href="{{ route('add.device') }}">Add new device</a></li>
+					</li>
+
+					<li><div class="dropdown">
+						  <button class="dropbtn">Device</button>
+						  <div class="dropdown-content">
+							  <a href="{{ route('add.device') }}">Add Device</a>
+							  <a href="{{ route('remove.device') }}">Remove Device</a>
+							  <a href="{{ route('turn.device') }}">Turn ON/OFF</a>
+							</div>
+					</div></li>
 					<li><a href="{{ route('signout') }}">Sign out</a></li>
 				@else
 					<li><a href="{{ route('auth.signup') }}">Sign up</a></li>

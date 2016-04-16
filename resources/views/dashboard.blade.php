@@ -14,7 +14,14 @@
 		<div class="outter-class">
 		
 			
-			<iframe src="http://localhost:5601/app/kibana#/visualize/create?embed=true&type=histogram&indexPattern=wifishield&_g=(refreshInterval:(display:Off,pause:!f,value:0),time:(from:now-2d,mode:quick,to:now))&_a=(filters:!(),linked:!f,query:(query_string:(analyze_wildcard:!t,query:'mac_address:%22{{$mac_address->mac_address}}%22')),uiState:(vis:(colors:('Average%20power':%23629E51))),vis:(aggs:!((id:'3',params:(customLabel:Voltage,field:voltage),schema:metric,type:avg),(id:'4',params:(customInterval:'2h',extended_bounds:(),field:date,interval:d,min_doc_count:1),schema:segment,type:date_histogram),(id:'5',params:(customLabel:Power,field:power),schema:metric,type:avg),(id:'6',params:(customLabel:Current,field:current),schema:metric,type:avg)),listeners:(),params:(addLegend:!t,addTimeMarker:!f,addTooltip:!t,defaultYExtents:!f,mode:grouped,scale:linear,setYExtents:!f,shareYAxis:!t,times:!(),yAxis:()),title:'New%20Visualization',type:histogram))" height="600" width=""></iframe>
+			<div id="temps_div">
+				<div style="position: relative;">
+        			<div dir="Temps" style="position: relative; width: 935px; height: 600px;">
+        				{!! \Lava::render('LineChart', 'Temps', 'temps_div') !!}
+            			@linechart('Temps', 'temps_div')
+            		</div>
+            	</div>
+        	</div>
 
 		</div>
 	</div>
@@ -29,8 +36,8 @@
 		
 			<div class="col-lg-3">
 				<div class="form-group">
-								<label for="from_date" class="control-label">From</label>
-								<input type="text" name="from_date" class="form-control" id="from_date" value="{{ Request::old('from_date')? :''}}">
+
+								<input type="text" name="from_date" class="form-control" id="from_date" value="{{ Request::old('from_date')? :''}}" placeholder="From Date">
 				</div>
 
 				<div>
@@ -43,8 +50,8 @@
 			</div>
 			<div class="col-lg-3">
 				<div class="form-group">
-								<label for="to_date" class="control-label">To</label>
-								<input type="text" name="to_date" class="form-control" id="to_date" value="{{ Request::old('to_date')? :''}}">
+					<!--			<label for="to_date" class="control-label">To</label>   -->
+								<input type="text" name="to_date" class="form-control" id="to_date" value="{{ Request::old('to_date')? :''}}" placeholder="To Date">
 				</div>
 
 				<div>
@@ -54,12 +61,19 @@
 			</div>
 			<div class="col-lg-6">
 				<div class="form-group">
-								<label for="find_device" class="control-label">Device</label>
-								<input type="text" name="find_device" class="form-control" id="find_device" value="{{ Request::old('find_device')? :''}}">
+						<div>
+								<select name="device">
+									<option value="nodevice">Select Device</option>
+								  	@if ($macAddress)
+							  			@foreach($macAddress as $macAddres)
+							  				<option value="{!!$macAddres->device_name!!}">{!!$macAddres->device_name!!}</option>
+							  			@endforeach
+						  			@endif
+								</select>
+						</div>
+				
 				</div>
-				<div>
-						<p>Name of your device</p>
-				</div>
+				
 
 			</div>
 			
@@ -67,5 +81,6 @@
 	
 	</div>
 </div>
+
 
 @stop

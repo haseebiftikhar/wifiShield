@@ -6,5 +6,3 @@ Homestead.json
 .env
 mail.php
 composer.lock
-dashboard.blade.php
-dashboardSearch.blade.php

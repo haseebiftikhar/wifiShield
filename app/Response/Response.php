@@ -101,4 +101,27 @@
 				code::HTTP_INTERNAL_SERVER_ERROR
 			);
 		}
+
+
+		public function keep_on($message = "ON"){
+			
+			return http::json(
+				[
+					"status" => $message,
+					"status_code" => code::HTTP_OK
+				],
+				code::HTTP_OK
+			);
+		}
+
+		public function turn_off($message = "OFF"){
+			
+			return http::json(
+				[
+					"status" => $message,
+					"status_code" => code::HTTP_OK
+				],
+				code::HTTP_OK
+			);
+		}
 	}

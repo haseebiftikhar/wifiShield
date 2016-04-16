@@ -8,7 +8,7 @@
 		</div>
 	@endif
 
-	<h3>Welcome to Application</h3>
+	<h3>Add new dvice</h3>
 	<p> To proceed further kindly add your Device MAC Address and Name it.</p>
 <div class="row">
 	<div class="col-lg-6">
