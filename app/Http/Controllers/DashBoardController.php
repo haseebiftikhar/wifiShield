@@ -33,19 +33,19 @@ Class DashBoardController extends Controller
 			'user_id'=> $client->id,
 			'mac_address'=>$request->input('mac_address'),
 			'device_name'=>$request->input('device_name'),
+			'status'=>1,
 		]);
 
         $user = $session->get('email');
-		$mac = base64_encode($request->input('mac_address'));
 		
 
-		\Mail::raw("Use following URL to send Post HTTP request:
+		\Mail::raw("Following device has been added to your profile:
 
-			For Device: 
+			Device details:
+
 			MAC: ".$request->input('mac_address')."
 			Device Name: ".$request->input('device_name')."
 
-			Your device has been successfully added.
 
 			Best Regards
 			Happy Energy Saving!!", function ($message) use ($user){
@@ -53,7 +53,7 @@ Class DashBoardController extends Controller
         		    ->subject('APPLICATION!');
         });
         
-        $session->set('info' , 'Check email for HTTP Request Method.');
+        $session->set('info' , $request->input('device_name').' is added to your profie.');
 		return redirect()->route('newdashBoard');
 	}
 

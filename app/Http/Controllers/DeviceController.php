@@ -12,64 +12,88 @@ use App\Models\Power;
 
 Class DeviceController  extends Controller
 {
-	public function addDevice(Session $session)
+	protected $macAddress;
+	protected $client;
+
+	public function __construct(Session $session)
 	{
 		$client = Client::whereEmail($session->get('email'))->first();
-
 		$macAddress = MacAddress::whereUserId($client->id)->get();
+
+		$this->client = $client;
+		$this->macAddress = $macAddress;
+	}
+
+	public function addDevice(Session $session)
+	{
 
 		$session->set('info' , 'Please chose unique name and valid mac address.');
 
-		return view('device',['session'=>$session,'macAddress'=>$macAddress]);
+		return view('device',['session'=>$session,'macAddress'=>$this->macAddress]);
 	}
 
 	public function removeDevice(Session $session)
 	{
-
-		$client = Client::whereEmail($session->get('email'))->first();
-
-		$macAddress = MacAddress::whereUserId($client->id)->get();
-		return view('removedevice',['session'=>$session,'macAddress'=>$macAddress]);
+		return view('removedevice',['session'=>$session,'macAddress'=>$this->macAddress]);
 	}
 
 	public function deleteDevice(Session $session)
 	{
-		$client = Client::whereEmail($session->get('email'))->first();
 		$find_device = Input::get('device');
 
+		if ($find_device == 'nodevice') {
+			$session->set('info' , 'Please select device.');
+			return view('removedevice',['session'=>$session,'macAddress'=>$this->macAddress]);
+		}
+
 		$mac_address = MacAddress::where('device_name',$find_device)
-									->where('user_id',$client->id)
+									->where('user_id',$this->client->id)
 									->first();
 
 		MacAddress::where('mac_address',$mac_address->mac_address)
-					->where('user_id',$client->id)
+					->where('user_id',$this->client->id)
 					->update(['mac_address'=> $mac_address->mac_address.'-del',
 						      'user_id'=> $mac_address->user_id.'-del']);
 
 		Voltage::where('mac_address',$mac_address->mac_address)
-					->where('user_id',$client->id)
+					->where('user_id',$this->client->id)
 					->update(['mac_address'=> $mac_address->mac_address.'-del',
 						      'user_id'=> $mac_address->user_id.'-del']);
 
 		Current::where('mac_address',$mac_address->mac_address)
-					->where('user_id',$client->id)
+					->where('user_id',$this->client->id)
 					->update(['mac_address'=> $mac_address->mac_address.'-del',
 						      'user_id'=> $mac_address->user_id.'-del']);
 
 		Power::where('mac_address',$mac_address->mac_address)
-					->where('user_id',$client->id)
+					->where('user_id',$this->client->id)
 					->update(['mac_address'=> $mac_address->mac_address.'-del',
 						      'user_id'=> $mac_address->user_id.'-del']);
+
+		$user = $session->get('email');
+
+		\Mail::raw("Following device has been removed from your profile:
+
+			Device details:
+			MAC: ".$mac_address->mac_address."
+			Device Name: ".$find_device."
+
+			.
+			Best Regards
+			Happy Energy Saving!!", function ($message) use ($user){
+            $message->to($user, 'Beloved User')
+        		    ->subject('APPLICATION!');
+        });
+
+		$session->set('info' , $find_device.' is removed from your profie.');
 
 		return redirect()->route('data');
 	}
 
 	public function turnDevice(Session $session)
 	{
-		$client = Client::whereEmail($session->get('email'))->first();
-		$macAddress = MacAddress::whereUserId($client->id)->get();
 
-		return view('turndevice',['session'=>$session,'macAddress'=>$macAddress]);
+		return view('turndevice',['session'=>$session,'macAddress'=>$this->macAddress]);
 	}
 
 	public function changeStatus(Session $session)
@@ -99,6 +123,8 @@ Class DeviceController  extends Controller
 					->where('user_id',$client->id)
 					->update(['status'=> 0]);
 		}
+
+		$session->set('info',$find_device.' is turned '.$status.'.');
 
 		return redirect()->route('data');
 	}

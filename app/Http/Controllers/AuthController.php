@@ -39,11 +39,8 @@ Class AuthController extends Controller
 				return redirect()->route('auth.signin');
 			}
 
-		//Setting Sessions
 		$session->set('email',$request->input('email'));
-		//$session->set('id',$request->input('id'));
 
-		//$session->set('info' , 'You are Signed in');
 		return redirect()->route('newdashBoard');
 	}
 
@@ -115,7 +112,6 @@ Class AuthController extends Controller
 
 	public function getForgot( Session $session)
 	{
-		//var_dump('Forgot my password');
 		return view('auth.forgot',['session'=>$session]);
 	}
 
@@ -133,7 +129,7 @@ Class AuthController extends Controller
 		}
 		
 		$confirmation_code = str_random(30);
-		$user = $request->input('email'); //for email
+		$user = $request->input('email');
 
 		Client::where('email',$request->input('email'))
 				->update(['confirmation_code'=>$confirmation_code,'confirmed'=>0]);
@@ -157,22 +153,17 @@ Class AuthController extends Controller
 	{
 
 		if (! $confirmation_code) {
-			//throw new InvalidConfirmationCodeException;
 			$session->set('info' , 'Link Expired!!');
 			return view('home',['session'=>$session]);
 		}
-		//dd($confirmation_code);
+
 		$user = Client::whereConfirmationCode($confirmation_code)->first();
 		
 		if ( ! $user)
         {
-            //throw new InvalidConfirmationCodeException;
             $session->set('info' , 'Link Expired!!');
 			return view('home',['session'=>$session]);
         }
-        /*$user->confirmed = 1;
-        $user->confirmation_code = null;
-        $user->save();*/
         $session->set('confirmation_code' , $confirmation_code);
         $session->set('info' , 'Reset password');
 		return view('auth.passwordreset',['session'=>$session]);
@@ -193,7 +184,6 @@ Class AuthController extends Controller
 		$user = Client::whereConfirmationCode($confirmation_code)->first();
 		if ( ! $user)
         {
-            //throw new InvalidConfirmationCodeException;
             $session->set('info' , 'Link Expired!!');
 			return view('home',['session'=>$session]);
         }

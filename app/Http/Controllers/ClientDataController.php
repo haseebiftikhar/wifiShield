@@ -50,7 +50,6 @@ Class ClientDataController extends Controller
 											$currentDate->format('Y-m-d'));
 
 		$out = $this->chart->getLineChart($voltage,$current,$power,$value = null);
-		//select * from voltages where mac_address="anc12345" and date >= 1459810264 and date <= 1460231479
 		
 
 		return view('dashboard',['Temps'=>$out,'macAddress'=>$macAddress,'session'=>$session]);
@@ -114,7 +113,6 @@ Class ClientDataController extends Controller
 			return redirect()->route('data');
 		}
 
-		// $session->set('email','haseeb@brokergenius.com');
 		$client = Client::whereEmail($session->get('email'))->first();
 
 		$macAddress = MacAddress::whereUserId($client->id)->get();
