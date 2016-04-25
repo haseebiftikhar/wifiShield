@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="{{ route('data') }}">Energy Monitoring and Control System</a>
+				<a class="navbar-brand" href="{{ route('home') }}">Energy Monitoring and Control System</a>
 			</div>
 		<div class="collapse navbar-collapse">
 			@if (Auth::Check())

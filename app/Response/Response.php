@@ -6,6 +6,7 @@
 	/**
 	 * Returns proper HTTP Response Codes with delgated data/message.
 	 * @author: Mubin
+	 * @author: Haseeb (Update performed)
 	 */
 	class Response{
 		/**
