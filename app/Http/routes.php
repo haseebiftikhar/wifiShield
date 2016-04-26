@@ -16,6 +16,10 @@ Route::post('/search',[
 	'as'=>'search',
 	]);
 
+Route::get('/search', function () {
+    return redirect()->route('home');
+	});
+
 Route::get('/date',[
 	'uses'=>'ClientDataController@date',
 	]);
