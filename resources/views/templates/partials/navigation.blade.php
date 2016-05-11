@@ -1,7 +1,11 @@
 <nav class="navbar navbar-default" role="navigation">
 	<div class="container">
 			<div class="navbar-header">
+				@if (Auth::Check())
 				<a class="navbar-brand" href="{{ route('home') }}">Energy Monitoring and Control System</a>
+				@else
+				<a class="navbar-brand" href="{{ route('login') }}">Energy Monitoring and Control System</a>
+				@endif
 			</div>
 		<div class="collapse navbar-collapse">
 			@if (Auth::Check())

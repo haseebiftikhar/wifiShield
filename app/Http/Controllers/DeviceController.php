@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use Symfony\Component\HttpFoundation\Session\Session;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use App\Models\Client;
 use App\Models\MacAddress;
@@ -92,41 +93,41 @@ Class DeviceController  extends Controller
 
 	public function turnDevice(Session $session)
 	{
-
+		//dd($this->macAddress);
 		return view('turndevice',['session'=>$session,'macAddress'=>$this->macAddress]);
 	}
 
-	public function changeStatus(Session $session)
+	public function changeStatus(Session $session,Request $request)
 	{
-		$find_device = Input::get('tdevice');
-		$status = Input::get('status');
-		
-		if($find_device == 'nodevice')
-		{
-			$session->set('info' , 'Please Select Device'); 
-			return redirect()->route('turn.device');
-		}
-
+		//$find_device = Input::get('tdevice');
+		//$status = Input::get('status');
+		//var_dump('here i am ');
+		$find_device = $request->input('tdevice');
+		$status = $request->input('status');
 		$client = Client::whereEmail($session->get('email'))->first();
 		$mac_address = MacAddress::where('device_name',$find_device)
-									->where('user_id',$client->id)
-									->first();
-
-		if ($status == 'ON') {
+								->where('user_id',$client->id)
+								->first();
+		if ($status == 'true') {
 			MacAddress::where('mac_address',$mac_address->mac_address)
 					->where('user_id',$client->id)
 					->update(['status'=> 1]);
-		}
-
-		if ($status == 'OFF') {
+		}else{
 			MacAddress::where('mac_address',$mac_address->mac_address)
 					->where('user_id',$client->id)
 					->update(['status'=> 0]);
 		}
 
-		$session->set('info',$find_device.' is turned '.$status.'.');
+		if ($status == false){
+			$tstatus = 'Off';
+		}
+		if ($status == true){
+			$tstatus = 'On';
+		}
 
-		return redirect()->route('data');
+		$session->set('info',$find_device.' is turned '.$tstatus.'.');
+		return "true";
+		//return redirect()->route('data');
 	}
 
 

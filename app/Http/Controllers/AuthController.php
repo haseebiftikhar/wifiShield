@@ -107,7 +107,7 @@ Class AuthController extends Controller
 	{
 		$session->clear();
 		Auth::logout();
-		return redirect()->route('home');
+		return redirect()->route('login');
 	}
 
 	public function getForgot( Session $session)

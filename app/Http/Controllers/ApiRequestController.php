@@ -77,7 +77,6 @@ Class ApiRequestController extends Controller
 
 
 		$timeStemp = $this->date->getTimestamp();
- 
 		$data = [
 			'user_id'=> $user->user_id,
 			'mac_address'=> $mac_address,

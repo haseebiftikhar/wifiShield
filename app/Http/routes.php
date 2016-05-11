@@ -31,10 +31,10 @@ Route::get('/alert', function (Session $session) {
 	$session->set('info','Alert!');
 	return redirect()->route('home');
 	});
-
+/*------------------------------------------------------*/
 
 Route::get('/', function () {
-    return redirect()->route('home');
+    return redirect()->route('login');
 	});
 
 Route::get('/home', [
@@ -42,6 +42,10 @@ Route::get('/home', [
 	'as' => 'home',
 	]);
 
+Route::get('/login', [
+	'uses' => 'HomeController@login',
+	'as' => 'login',
+	]);
 
 Route::get('/signup', [
 	'uses' => '\App\Http\Controllers\AuthController@getSignup',
@@ -51,7 +55,6 @@ Route::post('/signup',[
 	'uses' => '\App\Http\Controllers\AuthController@postSignup'
 	]);
 
-
 Route::get('/signin', [
 	'uses' => '\App\Http\Controllers\AuthController@getSignin',
 	'as' => 'auth.signin',
@@ -60,7 +63,7 @@ Route::post('/signin', [
 	'uses' => '\App\Http\Controllers\AuthController@postSignin',
 	]);
 
-
+/*
 Route::get('/dashbord', [
 	'uses' => '\App\Http\Controllers\AuthController@dashbord',
 	'as' => 'dashbord',
@@ -68,7 +71,7 @@ Route::get('/dashbord', [
 Route::post('/dashbord', [
 	'uses' => '\App\Http\Controllers\AuthController@dashbord',
 	]);
-
+*/
 
 Route::get('/signout', [
 	'uses' => '\App\Http\Controllers\AuthController@postSignout',
