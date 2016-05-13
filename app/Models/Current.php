@@ -13,5 +13,6 @@ class Current extends Model
         'mac_address',
         'current',
         'date',
+        'only_date',
     ];
 }

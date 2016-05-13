@@ -24,7 +24,9 @@ Route::get('/date',[
 	'uses'=>'ClientDataController@date',
 	]);
 
-
+Route::get('/gauge',[
+	'uses'=>'ClientDataController@dailyUsageChart',
+	]);
 
 
 Route::get('/alert', function (Session $session) {

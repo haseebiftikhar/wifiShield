@@ -101,4 +101,44 @@ class DataProfile
 		$items = array_merge($value,$date);
         return $items;
 	}
+
+	public function dailyVoltageData($user_id,$date)
+	{
+		$data = \DB::table('voltages')
+				->select("*")
+				->where("user_id",$user_id)
+				->where('only_date', $date)
+                ->orderBy('date', 'asc')
+                ->avg('voltage')
+        ;
+        
+        return $data;
+	}
+
+	public function dailyCurrentData($user_id,$date)
+	{
+		$data = \DB::table('currents')
+				->select("*")
+				->where("user_id",$user_id)
+				->where('only_date', $date)
+                ->orderBy('date', 'asc')
+                ->avg('current')
+        ;
+
+        return $data;
+	}
+
+	public function dailyPowerData($user_id,$date)
+	{
+		$data = \DB::table('powers')
+				->select("*")
+				->where("user_id",$user_id)
+				->where('only_date', $date)
+                ->orderBy('date', 'asc')
+                ->avg('power')
+        ;
+
+        return $data;
+	}
+
 }

@@ -93,6 +93,7 @@ Class ApiRequestController extends Controller
 			'mac_address'=> $mac_address,
 			'voltage'=>$value,
 			'date'=>$timeStemp,
+			'only_date'=>$this->date,
 		]);
 
 
@@ -137,6 +138,7 @@ Class ApiRequestController extends Controller
 			'mac_address'=> $mac_address,
 			'current'=>$value,
 			'date'=>$timeStemp,
+			'only_date'=>$this->date,
 		]);
 		$response = 'value saved';
 		return $this->response->success($response);
@@ -180,6 +182,7 @@ Class ApiRequestController extends Controller
 			'mac_address'=> $mac_address,
 			'power'=>$value,
 			'date'=>$timeStemp,
+			'only_date'=>$this->date,
 		]);
 
 		$response = 'value saved';

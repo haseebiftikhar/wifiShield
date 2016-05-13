@@ -59,4 +59,39 @@ class Chart
 
 	}
 
+	public function gaugeChart($voltage,$power,$current)
+	{
+		if($voltage == null){
+			$voltage = 0;
+		}
+		if($power == null){
+			$power = 0;
+		}
+		if($current == null){
+			$current = 0;
+		}
+		$temps = Lava::DataTable();
+
+		$temps->addStringColumn('Type')
+		      ->addNumberColumn('Value')
+		      ->addRow(['Voltage', $voltage])
+		      ->addRow(['Power', $power])
+		      ->addRow(['Current', $current]);
+
+		$out = Lava::GaugeChart('Gauge', $temps, [
+		    'width'      => 150,
+		    'greenFrom'  => 0,
+		    'greenTo'    => 69,
+		    'yellowFrom' => 70,
+		    'yellowTo'   => 89,
+		    'redFrom'    => 90,
+		    'redTo'      => 100,
+		    'majorTicks' => [
+		        'Safe',
+		        'Critical'
+		    ]
+		]);
+		return $out;
+	}
+
 }

@@ -12,7 +12,7 @@
 		
 <div style="clear:both"></div>
 <div class="row no-gap">
-	<div class="col-lg-2 no-pad">
+<!--	<div class="col-lg-2 no-pad">
 		<div class="panel panel-default">
 	        <div class="panel-heading"><h4 class="heading-color">Select Device</h4></div>
 			<div class="panel-body">
@@ -35,8 +35,8 @@
 			</table>
         </div>
 		</div>
-	</div>
-	<div class="col-lg-10 no-pad">
+	</div> -->
+	<div class="col-lg-12 no-pad">
 	<div class="panel panel-default">
     <div class="panel-heading"><h4 class="heading-color">Average Usage History</h4></div>
 	<div class="panel-body">
@@ -99,7 +99,21 @@
 		</div>
 		</div>
 
-		<div class="col-lg-3 no-pad"></div>
+		<div class="col-lg-3 no-pad">
+			<div class="panel panel-default">
+	        <div class="panel-heading">Select Device</div>
+			<div class="panel-body">
+				<div id="tempsDiv">
+					<div style="position: relative;">
+						<div dir="Gauge" style="position: relative; width: 135px; height: 600px;">
+							{!! \Lava::render('GaugeChart', 'Gauge', 'tempsDiv') !!}
+				   			@gaugechart('Gauge', 'tempsDiv')
+				  		</div>
+				   	</div>
+				</div>
+			</div>
+			</div>
+		</div>
 
 		<div class="col-lg-6 no-pad">
 			<div class="panel panel-default">
@@ -123,7 +137,7 @@
 </div>
 </div>
 
-
+<div style="clear:both"></div>
 
 
 @stop

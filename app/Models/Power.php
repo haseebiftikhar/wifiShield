@@ -13,5 +13,6 @@ class Power extends Model
         'mac_address',
         'power',
         'date',
+        'only_date',
     ];
 }

@@ -18,6 +18,7 @@ class CreatePowerTable extends Migration
             $table->string('mac_address');
             $table->string('power');
             $table->string('date');
+            $table->date('only_date');
             $table->timestamps();
         });
     }

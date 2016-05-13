@@ -18,6 +18,7 @@ class CreateCurrentTable extends Migration
             $table->string('mac_address');
             $table->string('current');
             $table->string('date');
+            $table->date('only_date');
             $table->timestamps();
         });
     }

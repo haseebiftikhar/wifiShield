@@ -14,16 +14,47 @@ Class ClientDataController extends Controller
 {
 	protected $chart;
 	protected $dataProfile;
+	protected $date;
 
 	function __construct(Chart $chart, DataProfile $dataProfile)
 	{
 		$this->chart = $chart;
 		$this->dataProfile = $dataProfile;
+
+		$timezone = new \DateTimeZone('Asia/Karachi');
+		$date = new \DateTime();
+		$date->setTimezone($timezone);
+		$this->date=$date;
 	}
+
+	public function dailyVoltage($id)
+	{
+		$tempValue = $this->dataProfile->dailyVoltageData($id,
+														  $this->date->format('Y-m-d'));
+		return $tempValue;
+	}
+
+	public function dailyCurrent($id)
+	{
+		$tempValue = $this->dataProfile->dailyCurrentData($id,
+														  $this->date->format('Y-m-d'));
+		return $tempValue;
+	}
+
+	public function dailyPower($id)
+	{
+		$tempValue = $this->dataProfile->dailyPowerData($id,
+														  $this->date->format('Y-m-d'));
+		return $tempValue;
+	}	
+
 	public function showData(Session $session)
 	{
 		$client = Client::whereEmail($session->get('email'))->first();
-
+		if($client == null){
+			$session->set('info' , 'Please Signin.'); 
+			return redirect()->route('auth.signin');
+		}
 		$macAddress = MacAddress::whereUserId($client->id)->get();
 		
 		$timezone = new \DateTimeZone('Asia/Karachi');
@@ -50,9 +81,15 @@ Class ClientDataController extends Controller
 											$currentDate->format('Y-m-d'));
 
 		$out = $this->chart->getLineChart($voltage,$current,$power,$value = null);
+
+		$dailyVoltage = self::dailyVoltage($client->id);
+		$dailyCurrent = self::dailyCurrent($client->id);
+		$dailyPower = self::dailyPower($client->id);
+
+		$out2 = $this->chart->gaugeChart($dailyVoltage, $dailyPower, $dailyCurrent);
 		
 
-		return view('dashboard',['Temps'=>$out,'macAddress'=>$macAddress,'session'=>$session]);
+		return view('dashboard',['Temps'=>$out,'Gauge'=>$out2,'macAddress'=>$macAddress,'session'=>$session]);
 	}
 
 	public function showSelectedData($value, Session $session)
@@ -137,6 +174,18 @@ Class ClientDataController extends Controller
 
 		return view('dashboard',['Temps'=>$out,'macAddress'=>$macAddress,'session'=>$session]);
 
+	}
+
+	public function dailyUsageChart(Request $request, Session $session)
+	{
+
+		$client = Client::whereEmail($session->get('email'))->first();
+
+		$macAddress = MacAddress::whereUserId($client->id)->get();
+
+		$out2 = $this->chart->gaugeChart();
+
+		return view('dashboard',['Gauge'=>$out2,'macAddress'=>$macAddress,'session'=>$session]);
 	}
 
 

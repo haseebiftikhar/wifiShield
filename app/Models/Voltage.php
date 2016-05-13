@@ -13,5 +13,6 @@ class Voltage extends Model
         'mac_address',
         'voltage',
         'date',
+        'only_date',
     ];
 }
