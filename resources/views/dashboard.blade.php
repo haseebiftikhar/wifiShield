@@ -8,8 +8,45 @@
 		</div>
 @endif
 
-
-		
+<div class="row no-gap">
+	<div class="col-lg-12 no-pad">
+		<div class="panel panel-default">
+	    <div class="panel-heading"><h5>Select Devices</h5></div>
+		<div class="panel-body">
+			<table>
+			<?php $flag = 1; ?>
+			
+				<td>
+					<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/data">
+					<button type="submit" class="btn btn-default select-btn">ALL</button>
+					</form>
+				</td>
+				@foreach($macAddress as $macAddres)
+				@if($flag == 4)
+				<?php $flag = 0; ?>
+				<tr></tr>
+					<td>
+					
+						<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/newRoute/{!!$macAddres->device_name!!}">
+						<button type="submit" class="btn btn-default select-btn">{!!$macAddres->device_name!!}</button>
+						</form>
+					
+					</td>
+				@else
+				<?php $flag = $flag+1; ?>
+					<td>
+					<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/newRoute/{!!$macAddres->device_name!!}">
+					<button type="submit" class="btn btn-default select-btn">{!!$macAddres->device_name!!}</button>
+					</form>
+					</td>
+				@endif
+			
+				@endforeach
+				
+			</table>
+		</div>
+		</div>
+	</div>		
 <div style="clear:both"></div>
 <div class="row no-gap">
 <!--	<div class="col-lg-2 no-pad">
@@ -99,23 +136,31 @@
 		</div>
 		</div>
 
-		<div class="col-lg-3 no-pad">
+		<div class="col-lg-1 no-pad"></div>
+		<div class="col-lg-2 no-pad">
 			<div class="panel panel-default">
-	        <div class="panel-heading">Select Device</div>
+	        <div class="panel-heading">Todays Average Voltage</div>
 			<div class="panel-body">
-				<div id="tempsDiv">
-					<div style="position: relative;">
-						<div dir="Gauge" style="position: relative; width: 135px; height: 600px;">
-							{!! \Lava::render('GaugeChart', 'Gauge', 'tempsDiv') !!}
-				   			@gaugechart('Gauge', 'tempsDiv')
-				  		</div>
-				   	</div>
-				</div>
+				<h4>{!!$data['voltage']!!}</h4>
+			</div>
+			</div>
+			<div class="panel panel-default">
+	        <div class="panel-heading">Todays Average Current</div>
+			<div class="panel-body">
+				<h4>{!!$data['current']!!}</h4>
+			</div>
+			</div>
+			<div class="panel panel-default">
+	        <div class="panel-heading">Todays Average Power</div>
+			<div class="panel-body">
+				<h4>{!!$data['power']!!}</h4>
 			</div>
 			</div>
 		</div>
 
-		<div class="col-lg-6 no-pad">
+		<div class="col-lg-1 no-pad"></div>
+
+		<div class="col-lg-5 no-pad">
 			<div class="panel panel-default">
 	        <div class="panel-heading">Select Device</div>
 			<div class="panel-body no-pad">

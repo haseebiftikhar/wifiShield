@@ -82,14 +82,15 @@ Class ClientDataController extends Controller
 
 		$out = $this->chart->getLineChart($voltage,$current,$power,$value = null);
 
-		$dailyVoltage = self::dailyVoltage($client->id);
-		$dailyCurrent = self::dailyCurrent($client->id);
-		$dailyPower = self::dailyPower($client->id);
-
-		$out2 = $this->chart->gaugeChart($dailyVoltage, $dailyPower, $dailyCurrent);
 		
 
-		return view('dashboard',['Temps'=>$out,'Gauge'=>$out2,'macAddress'=>$macAddress,'session'=>$session]);
+		$data = ['voltage'=>$dailyVoltage = self::dailyVoltage($client->id),
+				 'current'=>$dailyCurrent = self::dailyCurrent($client->id),
+				 'power'=>$dailyPower = self::dailyPower($client->id)
+				];
+		
+
+		return view('dashboard',['Temps'=>$out,'data'=>$data,'macAddress'=>$macAddress,'session'=>$session]);
 	}
 
 	public function showSelectedData($value, Session $session)
@@ -124,7 +125,13 @@ Class ClientDataController extends Controller
 
 		$out = $this->chart->getLineChart($voltage,$current,$power,$value);
 
-		return view('dashboard',['Temps'=>$out,'macAddress'=>$macAddress,'session'=>$session]);
+		$data = ['voltage'=>$dailyVoltage = self::dailyVoltage($client->id),
+				 'current'=>$dailyCurrent = self::dailyCurrent($client->id),
+				 'power'=>$dailyPower = self::dailyPower($client->id)
+				];
+		
+
+		return view('dashboard',['Temps'=>$out,'data'=>$data,'macAddress'=>$macAddress,'session'=>$session]);
 	}
 
 	public function searchData(Request $request, Session $session)
@@ -171,8 +178,14 @@ Class ClientDataController extends Controller
 										$to_date);
 
 		$out = $this->chart->getLineChart($voltage,$current,$power,$find_device);
+		
+		$data = ['voltage'=>$dailyVoltage = self::dailyVoltage($client->id),
+				 'current'=>$dailyCurrent = self::dailyCurrent($client->id),
+				 'power'=>$dailyPower = self::dailyPower($client->id)
+				];
+		
 
-		return view('dashboard',['Temps'=>$out,'macAddress'=>$macAddress,'session'=>$session]);
+		return view('dashboard',['Temps'=>$out,'data'=>$data,'macAddress'=>$macAddress,'session'=>$session]);
 
 	}
 

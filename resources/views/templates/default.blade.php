@@ -183,6 +183,19 @@
                  text-decoration:none; 
                  cursor:pointer;  
             }
+            .select-btn {
+                background-color: #F2F3F4; 
+                color: black; 
+                border: 2px solid #FBFCFC;
+                padding-left: 0;
+                padding-right: 0;
+                width: 200px;
+            }
+
+            .select-btn:hover {
+                background-color: #E5E8E8;
+                color: #2E4053;
+            }
 
         </style>
     </head>

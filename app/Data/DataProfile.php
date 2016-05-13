@@ -111,7 +111,9 @@ class DataProfile
                 ->orderBy('date', 'asc')
                 ->avg('voltage')
         ;
-        
+        if($data == null){
+        	$data = 0;
+        }
         return $data;
 	}
 
@@ -124,7 +126,9 @@ class DataProfile
                 ->orderBy('date', 'asc')
                 ->avg('current')
         ;
-
+        if($data == null){
+        	$data = 0;
+        }
         return $data;
 	}
 
@@ -137,7 +141,9 @@ class DataProfile
                 ->orderBy('date', 'asc')
                 ->avg('power')
         ;
-
+        if($data == null){
+        	$data = 0;
+        }
         return $data;
 	}
 
