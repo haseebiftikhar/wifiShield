@@ -25,7 +25,7 @@
 				@if(Auth::Check())
 					<li><a href="{{ route('newdashBoard') }}">{{Auth::user()->getnameOrUsername()}}</a></li>
 
-					<li>
+				<!--	<li>
 						<div class="dropdown">
 						  <button class="dropbtn">Select Device</button>
 						  <div class="dropdown-content">
@@ -37,7 +37,7 @@
 
 						  </div>
 					</div>
-					</li>
+					</li>  -->
 
 					<li><div class="dropdown">
 						  <button class="dropbtn">Device</button>
@@ -46,7 +46,7 @@
 							  <a href="{{ route('remove.device') }}">Remove Device</a>
 							  <a href="{{ route('turn.device') }}">Turn ON/OFF</a>
 							</div>
-					</div></li>
+					</div></li> 
 					<li><a href="{{ route('signout') }}">Sign out</a></li>
 				@else
 					<li><a href="{{ route('auth.signup') }}">Sign up</a></li>

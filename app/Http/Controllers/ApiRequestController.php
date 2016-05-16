@@ -74,7 +74,9 @@ Class ApiRequestController extends Controller
 		if (!$user) {
 			return $this->response->unauthorize();
 		}
-
+		if ($user->status == 0) {
+			return $this->response->turn_off();
+		}
 
 		$timeStemp = $this->date->getTimestamp();
 		$data = [
@@ -117,7 +119,9 @@ Class ApiRequestController extends Controller
 		if (!$user) {
 			return $this->response->unauthorize();
 		}
-
+		if ($user->status == 0) {
+			return $this->response->turn_off();
+		}
 
 		$timeStemp = $this->date->getTimestamp();
 
@@ -161,7 +165,9 @@ Class ApiRequestController extends Controller
 		if (!$user) {
 			return $this->response->unauthorize();
 		}
-
+		if ($user->status == 0) {
+			return $this->response->turn_off();
+		}
 
 		$timeStemp = $this->date->getTimestamp();
 

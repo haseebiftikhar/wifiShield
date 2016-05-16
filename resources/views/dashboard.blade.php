@@ -22,7 +22,7 @@
 					</form>
 				</td>
 				@foreach($macAddress as $macAddres)
-				@if($flag == 4)
+				@if($flag == 5)
 				<?php $flag = 0; ?>
 				<tr></tr>
 					<td>
