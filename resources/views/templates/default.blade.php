@@ -89,7 +89,10 @@
                 padding: 15px;
             }
 
-            tr:hover {background-color: #FDFEFE}
+            .tr-hover:hover {background-color: #FDFEFE}
+            /*tr:hover {background-color: #FDFEFE}*/
+            td:hover {background-color: #F8F9F9}
+
             th {
                 background-color: #E5E7E9;
                 color: #34495E;
@@ -186,7 +189,7 @@
             .select-btn {
                 background-color: #F2F3F4; 
                 color: black; 
-                border: 2px solid #FBFCFC;
+                border: 2px solid #E74C3C;
                 padding-left: 0;
                 padding-right: 0;
                 width: 200px;
@@ -195,6 +198,7 @@
             .select-btn:hover {
                 background-color: #E5E8E8;
                 color: #2E4053;
+                border: 2px solid #E74C3C;
             }
 
         </style>

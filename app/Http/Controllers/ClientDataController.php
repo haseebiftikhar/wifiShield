@@ -48,6 +48,72 @@ Class ClientDataController extends Controller
 		return $tempValue;
 	}	
 
+
+
+	public function myData(Session $session,Request $request)
+	{
+		$count = 0;
+
+		$getVoltage = $request->input('voltage');
+		$getCurrent = $request->input('current');
+		$getPower = $request->input('power');
+
+		if ($getVoltage == 'voltage') {
+			$count = $count + 1;
+		}
+		if ($getCurrent == 'current') {
+			$count = $count + 1;
+		}
+		if ($getPower == 'power') {
+			$count = $count + 1;
+		}
+
+		$client = Client::whereEmail($session->get('email'))->first();
+		if($client == null){
+			$session->set('info' , 'Please Signin.'); 
+			return redirect()->route('auth.signin');
+		}
+		$macAddress = MacAddress::whereUserId($client->id)->get();
+		
+		$timezone = new \DateTimeZone('Asia/Karachi');
+
+		$currentDate = new \DateTime();
+		$currentDate->setTimezone($timezone);
+
+		$pastDate = new \DateTime();
+		$pastDate->setTimezone($timezone);
+		$pastDate->modify('-14 days');
+
+
+		$voltage=$this->dataProfile->dataById('voltage',
+											$client->id, 
+											$pastDate->format('Y-m-d'), 
+											$currentDate->format('Y-m-d'));
+		$current=$this->dataProfile->dataById('current',
+											$client->id, 
+											$pastDate->format('Y-m-d'), 
+											$currentDate->format('Y-m-d'));
+		$power=$this->dataProfile->dataById('power',
+											$client->id, 
+											$pastDate->format('Y-m-d'), 
+											$currentDate->format('Y-m-d'));
+
+		$out = $this->chart->getLineChart($voltage,$current,$power,$value = null);
+
+		
+
+		$data = ['voltage'=>$dailyVoltage = self::dailyVoltage($client->id),
+				 'current'=>$dailyCurrent = self::dailyCurrent($client->id),
+				 'power'=>$dailyPower = self::dailyPower($client->id)
+				];
+		
+
+		return view('dashboard',['Temps'=>$out,'data'=>$data,'macAddress'=>$macAddress,'session'=>$session]);
+	}
+
+
+
+
 	public function showData(Session $session)
 	{
 		$client = Client::whereEmail($session->get('email'))->first();

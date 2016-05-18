@@ -18,7 +18,7 @@
 			
 				<td>
 					<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/data">
-					<button type="submit" class="btn btn-default select-btn">ALL</button>
+					<button type="submit" class="btn btn-default select-btn" style="border: 2px solid #48C9B0">ALL</button>
 					</form>
 				</td>
 				@foreach($macAddress as $macAddres)
@@ -28,7 +28,7 @@
 					<td>
 					
 						<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/newRoute/{!!$macAddres->device_name!!}">
-						<button type="submit" class="btn btn-default select-btn">{!!$macAddres->device_name!!}</button>
+						<button type="submit" class="btn btn-default select-btn" <?php if($macAddres->status){ echo 'style="border: 2px solid #00BE42;"';} ?>>{!!$macAddres->device_name!!}</button>
 						</form>
 					
 					</td>
@@ -36,7 +36,7 @@
 				<?php $flag = $flag+1; ?>
 					<td>
 					<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/newRoute/{!!$macAddres->device_name!!}">
-					<button type="submit" class="btn btn-default select-btn">{!!$macAddres->device_name!!}</button>
+					<button type="submit" class="btn btn-default select-btn" <?php if($macAddres->status){ echo 'style="border: 2px solid #00BE42;"';} ?>>{!!$macAddres->device_name!!}</button>
 					</form>
 					</td>
 				@endif
@@ -73,7 +73,7 @@
         </div>
 		</div>
 	</div> -->
-	<div class="col-lg-12 no-pad">
+<div class="col-lg-12 no-pad">
 	<div class="panel panel-default">
     <div class="panel-heading"><h4 class="heading-color">Average Usage History</h4></div>
 	<div class="panel-body">
@@ -93,7 +93,7 @@
 	</div>
 	</div>
 	</div>
-	</div>
+</div>
 </div>
 
 <div style="clear:both"></div>
@@ -137,44 +137,65 @@
 		</div>
 
 		<div class="col-lg-1 no-pad"></div>
-		<div class="col-lg-2 no-pad">
+		<div class="col-lg-3 no-pad">
 			<div class="panel panel-default">
 	        <div class="panel-heading">Todays Average Voltage</div>
 			<div class="panel-body">
-				<h4>{!!$data['voltage']!!}</h4>
+				<h3 style="color:blue; text-align:center;">{!!$data['voltage']!!} V</h3>
 			</div>
 			</div>
 			<div class="panel panel-default">
 	        <div class="panel-heading">Todays Average Current</div>
 			<div class="panel-body">
-				<h4>{!!$data['current']!!}</h4>
+				<h3 style="color:red; text-align:center;">{!!$data['current']!!} A</h3>
 			</div>
 			</div>
 			<div class="panel panel-default">
 	        <div class="panel-heading">Todays Average Power</div>
 			<div class="panel-body">
-				<h4>{!!$data['power']!!}</h4>
+				<h3 style="color:orange; text-align:center;">{!!$data['power']!!} W</h3>
 			</div>
 			</div>
 		</div>
 
 		<div class="col-lg-1 no-pad"></div>
 
-		<div class="col-lg-5 no-pad">
+		<div class="col-lg-4 no-pad">
 			<div class="panel panel-default">
-	        <div class="panel-heading">Select Device</div>
+	        <div class="panel-heading">Display Statics</div>
 			<div class="panel-body no-pad">
                 <table>
-					@foreach($macAddress as $macAddres)
-					<tr>
-						<form class="form-vertical no-pad" role="form" method="get" action="/wifiShield/newRoute/{!!$macAddres->device_name!!}">
-							<button type="submit" class="btn btn-default device-btn">{!!$macAddres->device_name!!}</button>
-						</form>
-					
-					</tr>
-					@endforeach
-					
-				</table>
+					  <tr>
+					    <th>Status</th>
+					    <th>Data</th>
+					  </tr>
+						<tr class="tr-hover">
+						<td><input class="toggle-valueOnOff"  type="checkbox" checked="checked" data-value="voltage" data-toggle="toggle">
+						</td>	
+						<td>
+							<h4>Voltage</h4>
+							<div id="console-event"></div>
+						</td>
+						</tr>
+
+						<tr class="tr-hover">
+						<td><input class="toggle-valueOnOff"  type="checkbox" data-value="current" data-toggle="toggle">
+						</td>	
+						<td>
+							<h4>Current</h4>
+							<div id="console-event"></div>
+						</td>
+						</tr>
+
+						<tr class="tr-hover">
+						<td><input class="toggle-valueOnOff"  type="checkbox" data-value="power" data-toggle="toggle">
+						</td>	
+						<td>
+							<h4>Power</h4>
+							<div id="console-event"></div>
+						</td>
+						</tr>
+					</table>
 	        </div>
 			</div>
 		</div>
@@ -183,6 +204,23 @@
 </div>
 
 <div style="clear:both"></div>
-
+<script>
+    $(function() {
+    $('.toggle-valueOnOff').on('change',function() {
+    	var value = $(this).attr('data-value');
+      	var data = $(this).prop('checked');
+      	var formdata = 'value='+value+'&status='+data;
+      	console.log('DATA'+data+'...'+value);
+      	$.ajax({
+      		type: "POST",
+            url: "/wifiShield/status",
+            data: formdata,
+            success: function(html) {
+           	//console.log(html);
+         	}
+        });
+	    })
+	})
+</script>
 
 @stop

@@ -21,7 +21,7 @@
     <th>Device name</th>
   </tr>
 	@foreach($macAddress as $macAddres)
-	<tr>
+	<tr class="tr-hover">
 	<td><input class="toggle-eventOnOff"  type="checkbox" data-value="{!!$macAddres->device_name!!}" data-toggle="toggle" 
 		<?php if($macAddres->status){ echo 'checked="checked"';} ?> data-onstyle="success" data-offstyle="danger">
 	</td>	

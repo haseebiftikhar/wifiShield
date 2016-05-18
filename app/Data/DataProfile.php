@@ -26,6 +26,8 @@ class DataProfile
 		return $this->date->getTimestamp();
 	}
 
+	
+
 	public function dataById($find,$user_id,$strDate,$endDate)
 	{
 		$start= self::dateChange($strDate);

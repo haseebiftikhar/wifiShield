@@ -7,6 +7,11 @@ Route::get('/data',[
 	'as'=>'data',
 	]);
 
+Route::post('/mydata',[
+	'uses'=>'ClientDataController@myData',
+	'as'=>'mydata',
+	]);
+
 Route::get('/newRoute/{value}',[
 	'uses'=>'ClientDataController@showSelectedData',
 	'as'=>'newRoute',
