@@ -48,7 +48,184 @@ Class ClientDataController extends Controller
 		return $tempValue;
 	}	
 
+	public function getClientData(Session $session,Request $request)
+	{
+		$count = 0;
 
+		$getVoltage = $request->input('voltage');
+		$getCurrent = $request->input('current');
+		$getPower = $request->input('power');
+
+		if ($getVoltage == 'voltage') {
+			$count = $count + 1;
+		}
+		if ($getCurrent == 'current') {
+			$count = $count + 1;
+		}
+		if ($getPower == 'power') {
+			$count = $count + 1;
+		}
+
+		$client = Client::whereEmail($session->get('email'))->first();
+		if($client == null){
+			$session->set('info' , 'Please Signin.'); 
+			return redirect()->route('auth.signin');
+		}
+		$macAddress = MacAddress::whereUserId($client->id)->get();
+		
+		$timezone = new \DateTimeZone('Asia/Karachi');
+
+		$currentDate = new \DateTime();
+		$currentDate->setTimezone($timezone);
+
+		$pastDate = new \DateTime();
+		$pastDate->setTimezone($timezone);
+		$pastDate->modify('-14 days');
+
+
+		$voltage=$this->dataProfile->dataById('voltage',
+											$client->id, 
+											$pastDate->format('Y-m-d'), 
+											$currentDate->format('Y-m-d'));
+		$current=$this->dataProfile->dataById('current',
+											$client->id, 
+											$pastDate->format('Y-m-d'), 
+											$currentDate->format('Y-m-d'));
+		$power=$this->dataProfile->dataById('power',
+											$client->id, 
+											$pastDate->format('Y-m-d'), 
+											$currentDate->format('Y-m-d'));
+
+	 //var_dump($voltage);
+	 //$finaldata['voltages'] = $voltage['voltage'];
+	 //$finaldata['currents'] = $current['current'];
+	 //$finaldata['powers'] = $power['power'];
+	 //$finaldata['dates'] = $voltage['date'];
+	 //echo json_encode($finaldata);
+	if (isset($_GET) && ($_GET['voltage'] == 'off') && ($_GET['current'] == 'off') && ($_GET['power'] == 'off')) {
+		
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		//'voltage'=>$voltage['voltage'][$i],
+	 		//'current'=>$current['current'][$i],
+	 		//'power'=>$power['power'][$i]
+	 		);
+	 	}
+	 echo json_encode($finaldata);
+	}
+	elseif (isset($_GET) && ($_GET['voltage'] == 'off') && ($_GET['current'] == 'off') && ($_GET['power'] == 'on')) {
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		//'voltage'=>$voltage['voltage'][$i],
+	 		//'current'=>$current['current'][$i],
+	 		'power'=>$power['power'][$i]
+	 		);
+	 }
+	 echo json_encode($finaldata);
+	}
+	elseif (($_GET['voltage'] == 'off') && ($_GET['current'] == 'on') && ($_GET['power'] == 'off')) {
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		//'voltage'=>$voltage['voltage'][$i],
+	 		'current'=>$current['current'][$i],
+	 		//'power'=>$power['power'][$i]
+	 		);
+		}
+		echo json_encode($finaldata);
+	}
+	elseif (isset($_GET) && ($_GET['voltage'] == 'off') && ($_GET['current'] == 'on') && ($_GET['power'] == 'on')) {
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		//'voltage'=>$voltage['voltage'][$i],
+	 		'current'=>$current['current'][$i],
+	 		'power'=>$power['power'][$i]
+	 		);
+		}
+	echo json_encode($finaldata);
+	}
+	elseif (isset($_GET) && ($_GET['voltage'] == 'on') && ($_GET['current'] == 'off') && ($_GET['power'] == 'off')) {
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		'voltage'=>$voltage['voltage'][$i],
+	 		//'current'=>$current['current'][$i],
+	 		//'power'=>$power['power'][$i]
+	 		);
+		}
+		echo json_encode($finaldata);
+	}
+	elseif (isset($_GET) && ($_GET['voltage'] == 'on') && ($_GET['current'] == 'off') && ($_GET['power'] == 'on')) {
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		'voltage'=>$voltage['voltage'][$i],
+	 		//'current'=>$current['current'][$i],
+	 		'power'=>$power['power'][$i]
+	 		);
+		}
+		echo json_encode($finaldata);
+	}
+	elseif ( isset($_GET) && ($_GET['voltage'] == 'on') && ($_GET['current'] == 'on') && ($_GET['power'] == 'off')) {
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		'voltage'=>$voltage['voltage'][$i],
+	 		'current'=>$current['current'][$i],
+	 		//'power'=>$power['power'][$i]
+	 		);
+		}
+		echo json_encode($finaldata);
+	}
+	else{
+		for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	 	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	 		'voltage'=>$voltage['voltage'][$i],
+	 		'current'=>$current['current'][$i],
+	 		'power'=>$power['power'][$i]
+	 		);
+		}
+		echo json_encode($finaldata);
+	}
+
+
+
+
+	// if(isset($_GET['voltage']) && ($_GET['voltage'] == 'off')){
+	// 	for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	//  	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	//  		//'voltage'=>$voltage['voltage'][$i],
+	//  		'current'=>$current['current'][$i],
+	//  		'power'=>$power['power'][$i]);
+	//  }
+	//  echo json_encode($finaldata);
+	// }elseif(($_GET['voltage'] == 'off') && ($_GET['current'] == 'off') && ($_GET['power'] == 'off')){
+	//  	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	//  		// 'voltage'=>0,
+	//  		// 'current'=>0,
+	//  		// 'power'=>$power['power'][$i]);
+	//  	echo json_encode($finaldata);
+
+	// }elseif(isset($_GET['power']) && ($_GET['power'] == 'off')){
+	// 	for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	//  	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	//  		'voltage'=>$voltage['voltage'][$i],
+	//  		'current'=>$current['current'][$i],
+	//  		//'power'=>$power['power'][$i]
+	//  		);
+	//  }
+	//  echo json_encode($finaldata);
+
+	// }else{
+	// 	for ($i=0; $i < count($voltage['voltage']) ;$i++) {
+	//  	$finaldata[$i] = array('date'=>$voltage['date'][$i],
+	//  		'voltage'=>$voltage['voltage'][$i],
+	//  		'current'=>$current['current'][$i],
+	//  		'power'=>$power['power'][$i]);
+	//  }
+	//  echo json_encode($finaldata);
+	// }	
+	 
+
+	 //return view('dashboard',['Temps'=>$out,'data'=>$data,'macAddress'=>$macAddress,'session'=>$session]);
+
+	}
 
 	public function myData(Session $session,Request $request)
 	{

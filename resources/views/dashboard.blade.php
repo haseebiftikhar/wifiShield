@@ -83,8 +83,8 @@
 			<div id="temps_div">
 				<div style="position: relative;">
         			<div dir="Temps" style="position: relative; width: 135px; height: 600px;">
-        				{!! \Lava::render('LineChart', 'Temps', 'temps_div') !!}
-            			@linechart('Temps', 'temps_div')
+        			<!--	{!! \Lava::render('LineChart', 'Temps', 'temps_div') !!}
+            			@linechart('Temps', 'temps_div') -->
             		</div>
             	</div>
         	</div>
@@ -95,6 +95,8 @@
 	</div>
 </div>
 </div>
+
+<div id="myfirstchart" style="height: 250px;"></div>
 
 <div style="clear:both"></div>
 <div class="container">
@@ -170,7 +172,7 @@
 					    <th>Data</th>
 					  </tr>
 						<tr class="tr-hover">
-						<td><input class="toggle-valueOnOff"  type="checkbox" checked="checked" data-value="voltage" data-toggle="toggle">
+						<td><input id="toggle-voltage" class="toggle-valueOnOff toggle-checkit" checked='checked'  type="checkbox" data-value="voltage" data-toggle="toggle">
 						</td>	
 						<td>
 							<h4>Voltage</h4>
@@ -179,7 +181,7 @@
 						</tr>
 
 						<tr class="tr-hover">
-						<td><input class="toggle-valueOnOff"  type="checkbox" data-value="current" data-toggle="toggle">
+						<td><input id="toggle-current" class="toggle-valueOnOff toggle-checkit" checked='checked'  type="checkbox" data-value="current" data-toggle="toggle">
 						</td>	
 						<td>
 							<h4>Current</h4>
@@ -188,7 +190,7 @@
 						</tr>
 
 						<tr class="tr-hover">
-						<td><input class="toggle-valueOnOff"  type="checkbox" data-value="power" data-toggle="toggle">
+						<td><input id="toggle-power" class="toggle-valueOnOff toggle-checkit" checked='checked' type="checkbox" data-value="power" data-toggle="toggle">
 						</td>	
 						<td>
 							<h4>Power</h4>
@@ -204,6 +206,9 @@
 </div>
 
 <div style="clear:both"></div>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
 <script>
     $(function() {
     $('.toggle-valueOnOff').on('change',function() {
@@ -211,15 +216,77 @@
       	var data = $(this).prop('checked');
       	var formdata = 'value='+value+'&status='+data;
       	console.log('DATA'+data+'...'+value);
-      	$.ajax({
-      		type: "POST",
-            url: "/wifiShield/status",
-            data: formdata,
-            success: function(html) {
+      	//$.ajax({
+      	//	type: "POST",
+         //   url: "/wifiShield/vlotage",
+         //   data: formdata,
+         //   success: function(html) {
            	//console.log(html);
-         	}
-        });
-	    })
+        // 	}
+       // });
+	    });
+
+    var chart = new Morris.Line({
+  // ID of the element in which to draw the chart.
+  element: 'myfirstchart',
+  // Chart data records -- each entry in this array corresponds to a point on
+  // the chart.
+  data: [{"date":"0","voltage":0,"current":0,"power":0}],
+
+  // The name of the data record attribute that contains x-values.
+  xkey: 'date',
+  // A list of names of data record attributes that contain y-values.
+  ykeys: ['voltage','current','power'],
+  // Labels for the ykeys -- will be displayed when you hover over the
+  // chart.
+  labels: ['Avg Voltage','Avg Current','Avg Power']
+});
+   $.ajax({
+      	type: "GET",
+      	dataType: 'json',
+     	url: "http://127.0.0.1:149/wifiShield/getdata",
+     	data: 'voltage=on&power=on&current=on',
+   })
+    .done(function( data ) {
+      // When the response to the AJAX request comes back render the chart with new data
+      chart.setData(data);
+    })
+   .fail(function() {
+      // If there is no communication between the server, show an error
+      alert( "error occured" );
+    });
+
+   	$('.toggle-checkit').on('change',function(){
+   		var current = $('#toggle-current').prop('checked');
+   		var power = $('#toggle-power').prop('checked');
+   		var voltage = $('#toggle-voltage').prop('checked');
+   		if(current){
+   			var currentvalue = 'on';
+   		}else{
+   			var currentvalue = 'off';
+   		}
+   		if(power){
+   			var powervalue = 'on';
+   		}else{
+   			var powervalue = 'off';
+   		}
+   		if(voltage){
+   			var voltagevalue = 'on';
+   		}else{
+   			var voltagevalue = 'off';
+   		}
+
+   			$.ajax({
+		      	type: "GET",
+		      	dataType: 'json',
+		     	url: "http://127.0.0.1:149/wifiShield/getdata",
+		     	data: 'voltage='+voltagevalue+'&power='+powervalue+'&current='+currentvalue,
+		   })
+		    .done(function( data ) {
+		      // When the response to the AJAX request comes back render the chart with new data
+		      chart.setData(data);
+		    });
+	});
 	})
 </script>
 

@@ -56,8 +56,12 @@ class DataProfile
                      ->orderBy('date', 'asc')
                      ->avg($find)
             ;
-
-            $value[$find][] = $data;
+            if($data == null){
+            	$value[$find][] = 0;
+            }else{
+            	$value[$find][] = $data;
+            }
+            //$value[$find][] = $data;
             $date['date'][] = date('y-m-d',$start);
             $start = $start + 86400;
 		}

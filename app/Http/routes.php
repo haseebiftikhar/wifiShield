@@ -1,6 +1,10 @@
 <?php
 use Symfony\Component\HttpFoundation\Session\Session;
 
+Route::get('/getdata',[
+	'uses'=>'ClientDataController@getClientData',
+	'as'=>'getClientData',
+	]);
 
 Route::get('/data',[
 	'uses'=>'ClientDataController@showData',
