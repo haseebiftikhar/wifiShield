@@ -73,21 +73,22 @@
         </div>
 		</div>
 	</div> -->
+
 <div class="col-lg-12 no-pad">
 	<div class="panel panel-default">
     <div class="panel-heading"><h4 class="heading-color">Average Usage History</h4></div>
 	<div class="panel-body">
 		<div class="outter-class no-pad no-gap">
-		
-			
+		<div id="myfirstchart" style="height: 250px;"></div>
+	<!--			
 			<div id="temps_div">
 				<div style="position: relative;">
         			<div dir="Temps" style="position: relative; width: 135px; height: 600px;">
-        			<!--	{!! \Lava::render('LineChart', 'Temps', 'temps_div') !!}
-            			@linechart('Temps', 'temps_div') -->
+        				{!! \Lava::render('LineChart', 'Temps', 'temps_div') !!}
+            			@linechart('Temps', 'temps_div') 
             		</div>
             	</div>
-        	</div>
+        	</div> -->
 
 		</div>
 	</div>
@@ -96,7 +97,8 @@
 </div>
 </div>
 
-<div id="myfirstchart" style="height: 250px;"></div>
+
+
 
 <div style="clear:both"></div>
 <div class="container">
@@ -106,7 +108,7 @@
 		<div class="panel panel-default">
     	<div class="panel-heading">Search by date range</div>
 		<div class="panel-body">
-			<form class="form-vertical" role="form" method="post" action="/wifiShield/search/">
+			<form class="form-vertical" role="form" method="post" action="/wifiShield/getdata/">
 
 			<div class="form-group">
 				<label for="from_date" class="control-label">Start date</label>
@@ -205,7 +207,6 @@
 </div>
 </div>
 
-<div style="clear:both"></div>
 <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script> -->
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -239,7 +240,9 @@
   ykeys: ['voltage','current','power'],
   // Labels for the ykeys -- will be displayed when you hover over the
   // chart.
-  labels: ['Avg Voltage','Avg Current','Avg Power']
+  labels: ['Avg Voltage','Avg Current','Avg Power'],
+  resize: 'true'
+
 });
    $.ajax({
       	type: "GET",
@@ -279,7 +282,7 @@
    			$.ajax({
 		      	type: "GET",
 		      	dataType: 'json',
-		     	url: "http://127.0.0.1:149/wifiShield/getdata",
+		     	url: "/wifiShield/getdata",
 		     	data: 'voltage='+voltagevalue+'&power='+powervalue+'&current='+currentvalue,
 		   })
 		    .done(function( data ) {
@@ -288,6 +291,7 @@
 		    });
 	});
 	})
+
 </script>
 
 @stop
